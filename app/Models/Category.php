@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'code', 'description', 'img'];
 
     // หมวดหมู่มีหลายสินค้า
     public function products()

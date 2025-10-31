@@ -9,8 +9,11 @@ class FitnessCourse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price'];
+    protected $fillable = ['code', 'name', 'description', 'price', 'img'];
 
+    protected $casts = [
+        'image_urls' => 'array',
+    ];
     // คอร์ส belongsTo หมวดหมู่
     public function category()
     {
