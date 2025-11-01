@@ -1,13 +1,12 @@
 @extends('products.main')
 
 @section('content')
-<form action="{{ route('products.create') }}" method="post">
+<form action="{{ route('products.create') }}" method="post" enctype="multipart/form-data">
     @csrf
 
     <div class="app-cmp-form-detail">
         <label for="app-inp-code">Image</label>
-        <input type="file" accept="image/*" id="input-file" value="" name="img">
-
+            <input type="file" accept="image/*" name="img">
         <label for="app-inp-code">Code</label>
         <input type="text" id="app-inp-code" name="code" value="" required />
 

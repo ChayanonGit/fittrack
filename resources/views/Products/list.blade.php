@@ -11,6 +11,7 @@
         <table>
             <thead>
 
+                <tr>Image</tr>
                 <tr>Name</tr>
                 <tr>Desc</tr>
                 <tr>Stock</tr>
@@ -19,14 +20,18 @@
             <tbody>
                 <tr>
                     @foreach ($products as $products)
+                        @if ($products->img)
+                            <img src="{{ asset('storage/img_product/' . $products->img) }}" alt="{{ $products->name }}"
+                                width="100">
+                        @endif
                         <td>{{ $products->name }}</td>
                         <td>{{ $products->price }}</td>
                         <td>{{ $products->stock }}</td>
-                         <td><a href="{{ route('products.update-form', ['product' => $products->code]) }}">Edit</a>
+                        <td><a href="{{ route('products.update-form', ['product' => $products->code]) }}">Edit</a>
 
-                        <td> 
+                        <td>
 
-                    <td><a href="{{ route('products.delete', ['product' => $products->code]) }}">delete</a></td> --
+                        <td><a href="{{ route('products.delete', ['product' => $products->code]) }}">delete</a></td> --
                     @endforeach
                 </tr>
             </tbody>
