@@ -60,9 +60,19 @@
 
             @csrf
 
-            <a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ \Auth::user()->name }}</a>
-
+            @auth
+                <a href="{{ route('users.view-selves') }}" class="app-cl-code">
+                    {{ Auth::user()->name }}
+                </a>
             <button type="submit">Logout</button>
+
+            @endauth
+
+            @guest
+                <a href="{{ route('login') }}" class="app-cl-code">Login</a>
+            @endguest
+
+
 
         </form>
 
