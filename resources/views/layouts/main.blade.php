@@ -51,9 +51,9 @@
 			@if(Auth::check())
 				@if(Auth::user()->role === 'ADMIN')
 				{{-- left links --}}
-					<div class="">
-						<a href=""></a>
-						<a href=""></a>
+					<div class="app-cmp-links-right">
+						<a href="">Order</a>
+						<a href="{{ route('fitnessclass.list') }}">Classes</a>
 						<a href=""></a>
 					</div>
 
@@ -64,18 +64,17 @@
 
 
 					{{-- right links --}}
-					<div class="app-cmp-links-right">
-						<a href="#">Order</a>
-						<a href="{{ route('fitnessclass.list') }}">Classes</a>
+					<div class="app-cmp-links-left">
+						
 						<a href="{{ route('products.list') }}">Products</a>
 						<a href="{{ route('category.list') }}">Category</a>
 					</div>
 				@else
 				{{-- user menu --}}
-					<div class="app-cmp-links-left">
+					<div class="app-cmp-links-right">
 						<a href="{{ route('shop.view-shop') }}">Shop</a>
 						<a href="{{ route('shop.view-class') }}">Fitness Class</a>
-						<a href="{{ route('order.view-order') }}">My Order</a>
+						<a href="{{ route('order.view-order') }}"></a>
 					</div>
 
 					{{-- centered brand --}}
@@ -85,8 +84,8 @@
 
 
 					{{-- right links --}}
-					<div class="">
-						<a href=""></a>
+					<div class="app-cmp-links-left">
+						<a href="{{ route('order.view-order') }}">My Order</a>
 						<a href=""></a>
 						<a href=""></a>
 						<a href=""></a>

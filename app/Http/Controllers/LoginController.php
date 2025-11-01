@@ -76,7 +76,7 @@ class LoginController extends Controller
 
             // to route products.list if does not specify
 
-            return redirect()->intended(route('products.list'));
+            return redirect()->intended(route('home'));
         }
         $validator
 
