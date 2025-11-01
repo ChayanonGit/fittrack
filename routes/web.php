@@ -7,6 +7,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Models\FitnessCourse;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
+
 // for user
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
@@ -31,6 +34,14 @@ Route::controller(CartController::class)
         Route::post('/update/{code}',  'updateQuantity')->name('updateQuantity');
     });
 
+
+Route::controller(LoginController::class)
+    ->prefix('auth')
+    ->group(static function (): void {
+        Route::get('/login', 'showLoginForm')->name('login');
+        Route::post('/login', 'authenticate')->name('authenticate');
+        Route::post('/logout', 'logout')->name('logout');
+    });
 
 
 // for Admin 
@@ -77,5 +88,28 @@ Route::controller(FitnessCourseController::class)
             Route::get('/update', 'Updateclass')->name('update-class');
             Route::post('/update', 'update')->name('update');
             Route::get('/delete', 'delete')->name('delete');
+        });
+    });
+
+
+route::controller(UserController::class)
+    ->prefix('/user')
+    ->name('users.')
+    ->group(static function (): void {
+        route::get('', 'list')->name('list');
+        route::get('/create', 'showCreateForm')->name('create-form');
+        route::post('/create', 'create')->name('create');
+
+
+
+        route::get('/self', 'selfView')->name('view-selves');
+        route::get('/self/update', 'showUpdateSelf')->name('update-selves-form');
+        route::post('/self/update', 'UpdateSelf')->name('update-self');
+
+        route::prefix('/{user}')->group(static function (): void {
+            route::get('', 'view')->name('view');
+            route::get('/update', 'showUpdateForm')->name('update-form');
+            route::post('/update', 'update')->name('update');
+            route::post('/delete', 'delete')->name('delete');
         });
     });
