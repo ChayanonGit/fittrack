@@ -16,11 +16,13 @@
                 <th>ลบ</th>
             </tr>
             @foreach ($cart as $code => $item)
-                <tr data-code="{{ $code }}">
+            <tr data-code="{{ $code }}">
+                    <td><img src="{{ asset('storage/img_product/' . $item['img']) }}"
+                            alt="{{ $item['name'] }}" width="100"></td>
                     <td>{{ $item['name'] }}</td>
                     <td class="price">{{ number_format($item['price']) }}</td>
                     <td>
-                        <input type="number" class="quantity" value="{{ $item['quantity'] }}" min="0"
+                        <input type="number" class="quantity" value="{{ $item['quantity'] }}" min="1"
                             style="width:50px;">
                     </td>
                     <td class="total">{{ number_format($item['price'] * $item['quantity']) }}</td>
