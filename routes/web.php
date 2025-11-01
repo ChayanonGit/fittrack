@@ -8,7 +8,9 @@ use App\Http\Controllers\ProductController;
 use App\Models\FitnessCourse;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
+use App\Models\OrderDetail;
 
 // for user
 Route::get('/', [HomeController::class, 'home'])->name('home');
@@ -19,6 +21,17 @@ Route::controller(HomeController::class)
     ->group(function () {
         Route::get('/', 'viewshop')->name('view-shop');
         Route::get('/class', 'viewclass')->name('view-class');
+    });
+
+Route::controller(OrderDetailController::class)
+    ->prefix('/order')
+    ->name('order.')
+    ->group(function () {
+        Route::get('/', 'vieworder')->name('view-order');
+        Route::prefix('/{orderCode}')->group(static function (): void {
+            Route::get('/detail', 'orderDetail')->name('view-detail');
+            Route::get('/delete', 'delete')->name('delete');
+        });
     });
 
 
@@ -32,6 +45,7 @@ Route::controller(CartController::class)
         Route::post('/add/{id}', 'add')->name('add');               // cart.add
         Route::get('/remove/{code}', 'remove')->name('remove');     // cart.remove
         Route::post('/update/{code}',  'updateQuantity')->name('updateQuantity');
+        Route::post('/cart',  'checkout')->name('checkout');
     });
 
 

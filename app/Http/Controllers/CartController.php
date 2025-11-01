@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
@@ -26,7 +27,6 @@ class CartController extends Controller
     public function add(Request $request, $productCode)
     {
         $product = Product::where('code', $productCode)->firstOrFail();
-
         // ดึง cart จาก session
         $cart = session()->get('cart', []);
 
@@ -36,6 +36,7 @@ class CartController extends Controller
         } else {
             // ถ้ายังไม่มี เพิ่มใหม่
             $cart[$productCode] = [
+                'product_id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => 1,
@@ -87,39 +88,40 @@ class CartController extends Controller
 
 
 
-    // public function checkout(ServerRequestInterface $request, string $CateCode,)
-    // {
-    //     $cart = session()->get('cart', []);
-    //     if (empty($cart)) {
-    //         return redirect()->back()->with('error', 'ตะกร้าว่าง');
-    //     }
+    public function checkout(ServerRequestInterface $request)
+    {
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return redirect()->back()->with('error', 'ตะกร้าว่าง');
+        }
 
-    //     // คำนวณ total
-    //     $grandTotal = 0;
-    //     foreach ($cart as $item) {
-    //         $grandTotal += $item['price'] * $item['quantity'];
-    //     }
+        $grandTotal = 0;
+        foreach ($cart as $item) {
+            $grandTotal += $item['price'] * $item['quantity'];
+        }
 
-    //     // สร้าง order
-    //     $order = \App\Models\Order::create([
-    //         'user_id' => auth()->id(), // ถ้า login
-    //         'total' => $grandTotal
-    //     ]);
+        $order = \App\Models\Order::create([
+            'user_id' => auth()->id(),
+            'total' => $grandTotal,
+            'code' => 'ORD' . strtoupper(Str::random(6))
+        ]);
+        foreach ($cart as $code => $item) {
+            $orderDetail = new \App\Models\OrderDetail();
 
-    //     // สร้าง order_details
-    //     foreach ($cart as $code => $item) {
-    //         \App\Models\OrderDetail::create([
-    //             'order_id' => $order->id,
-    //             'product_code' => $code,
-    //             'product_name' => $item['name'],
-    //             'price' => $item['price'],
-    //             'quantity' => $item['quantity']
-    //         ]);
-    //     }
+            // ใส่ค่า attribute ตรง ๆ หรือใช้ forceFill
+            $orderDetail->forceFill([
+                'order_id'   => $order->id,
+                'product_id' => $item['product_id'],
+                'quantity'   => $item['quantity'],
+                'price'      => $item['price'],
+                'code'       => 'ORD' . strtoupper(Str::random(6)),
+            ]);
 
-    //     // ล้าง cart
-    //     session()->forget('cart');
+            $orderDetail->save();
+        }
 
-    //     return redirect()->route('cart.view-cart')->with('success', 'ชำระเงินเรียบร้อย!');
-    // }
+        session()->forget('cart');
+
+        return redirect()->route('cart.view-cart')->with('success', 'ชำระเงินเรียบร้อย!');
+    }
 }

@@ -46,6 +46,9 @@
 			<div class="app-cmp-home">
 				<a href="{{ route('home') }}" class="home">Fittrack</a>
 			</div>
+                <li>
+                    <a href="{{ route('order.view-order') }}">My Order</a>
+                </li>
 
 			{{-- right links --}}
 			<div class="app-cmp-links-right">
