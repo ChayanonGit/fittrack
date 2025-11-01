@@ -9,9 +9,9 @@ use App\Models\FitnessCourse;
 
 Route::controller(HomeController::class)
     ->prefix('')
-    ->name('fittrack.')
+    ->name('')
     ->group(function () {
-        Route::get('/fittrack', 'Home')->name('home');
+        Route::get('', 'Home')->name('home');
     });
 
 
