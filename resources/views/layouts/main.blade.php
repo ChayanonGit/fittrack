@@ -26,8 +26,9 @@
 				<div class="top-right">
 					<form action="{{ route('logout') }}" method="post" class="auth-form">
 						@csrf
+                        <a href="{{ route('cart.view-cart') }}" class="app-cl-code">cart</a>
 						<a href="{{ route('users.view-selves') }}" class="app-cl-code">USER</a>
-						<button type="submit" class="btn-logout">Logout</button>
+						<button type="submit" class="btn-logout">LONGOUT</button>
 					</form>
 				</div>
 			</div>
@@ -39,16 +40,14 @@
 			<div class="app-cmp-links-left">
 				<a href="{{ route('shop.view-shop') }}">Shop</a>
 				<a href="{{ route('shop.view-class') }}">Fitness Class</a>
-				<a href="#">My Order</a>
+				<a href="{{ route('order.view-order') }}">My Order</a>
 			</div>
 
 			{{-- centered brand --}}
 			<div class="app-cmp-home">
 				<a href="{{ route('home') }}" class="home">Fittrack</a>
 			</div>
-                <li>
-                    <a href="{{ route('order.view-order') }}">My Order</a>
-                </li>
+                
 
 			{{-- right links --}}
 			<div class="app-cmp-links-right">
