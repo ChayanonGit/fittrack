@@ -105,6 +105,7 @@ Route::controller(FitnessCourseController::class)
         });
     });
 
+<<<<<<< HEAD
 
 route::controller(UserController::class)
     ->prefix('/user')
@@ -127,3 +128,14 @@ route::controller(UserController::class)
             route::post('/delete', 'delete')->name('delete');
         });
     });
+=======
+    Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+
+// ...existing code...
+Route::get('/auth/login', function () {
+    return view('auth.login'); // หรือ return redirect()->route('login');
+});
+>>>>>>> origin/UX-UI2

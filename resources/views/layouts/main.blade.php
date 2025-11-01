@@ -28,7 +28,7 @@
 						@csrf
                         <a href="{{ route('cart.view-cart') }}" class="app-cl-code">cart</a>
 						<a href="{{ route('users.view-selves') }}" class="app-cl-code">USER</a>
-						<button type="submit" class="btn-logout">LONGOUT</button>
+						<button type="submit" class="btn-logout">LOGOUT</button>
 					</form>
 				</div>
 			</div>
