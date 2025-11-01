@@ -33,7 +33,7 @@
                 </li>
 
                 <li>
-                    <a href="">My Order</a>
+                    <a href="{{ route('order.view-order') }}">My Order</a>
                 </li>
 
                 {{-- Admin Menu --}}

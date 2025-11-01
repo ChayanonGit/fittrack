@@ -38,10 +38,13 @@
     @endif
 
 
-<form action="">
-    <button>CheckOut</button>
-</form>
-<button>cancel</button>
+    <form action="{{ route('cart.checkout', ['CartCode' => $cart]) }}" method="POST">
+        @csrf
+        <button type="submit">Checkout</button>
+    </form>
+
+
+    <button>cancel</button>
 @endsection
 
 
