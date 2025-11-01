@@ -62,6 +62,31 @@
 
 
     <main id="app-cmp-main-content" style="padding-top:8px;">
+
+        <form action="{{ route('logout') }}" method="post">
+
+            @csrf
+
+            @auth
+                <a href="{{ route('users.view-selves') }}" class="app-cl-code">
+                    {{ Auth::user()->name }}
+                </a>
+            <button type="submit">Logout</button>
+
+            @endauth
+
+            @guest
+                <a href="{{ route('login') }}" class="app-cl-code">Login</a>
+            @endguest
+
+
+
+        </form>
+
+    </header>
+
+
+    <main id="app-cmp-main-content">
         <header>
             <h1></h1>
             <div class="app-cmp-notifications">

@@ -11,9 +11,12 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
 use App\Models\OrderDetail;
-
-// for user
 Route::get('/', [HomeController::class, 'home'])->name('home');
+
+Route::middleware([
+    'cache.headers:no_store,no_cache,must_revalidate,max_age=0'
+])->group(function () {
+// for user
 
 Route::controller(HomeController::class)
     ->prefix('/shop')
@@ -127,3 +130,4 @@ route::controller(UserController::class)
             route::post('/delete', 'delete')->name('delete');
         });
     });
+});
