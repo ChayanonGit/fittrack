@@ -1,0 +1,278 @@
+/* -----------------------------------------
+
+   common.css — reorganized & deduplicated
+
+   Sections: vars / reset / base / header / nav / hero /
+
+             sections / product-cards / forms / footer / responsive
+
+   ----------------------------------------- */
+
+/* === Variables / Base === */
+:root{
+	--side-pad: 24px;
+	--bg-1: #fff7fb;
+	--bg-2: #f8fdff;
+	--accent-1: #A8DADC;
+	--accent-2: #FFC9DE;
+	--accent-3: #FFD9A8;
+	--muted: #6B6B6B;
+	--card-bg: rgba(255,255,255,0.75);
+	--glass-blur: 8px;
+	--radius: 12px;
+	--shadow-soft: 0 8px 24px rgba(16,24,40,0.06);
+	--shadow-strong: 0 12px 40px rgba(16,24,40,0.08);
+	font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding-left:var(--side-pad);padding-right:var(--side-pad);
+	-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+	background:
+		radial-gradient(800px 400px at -10% 10%, rgba(255,202,220,0.12) 0%, transparent 20%),
+		radial-gradient(700px 350px at 120% 90%, rgba(168,218,220,0.12) 0%, transparent 18%),
+		linear-gradient(180deg,var(--bg-1),var(--bg-2));
+	color:#15202b;
+	text-transform:uppercase;
+}
+
+/* container utility */
+.container{max-width:1100px;margin:0 auto;padding:48px 0}
+
+/* Remove link underlines globally */
+a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
+
+/* === Header / Top bar / Auth === */
+.app-cmp-main-header{position:relative;padding-top:0}
+
+/* optional top strip (hidden by default) */
+.app-cmp-main-header::before{ content:""; display:none; }
+
+/* user/auth form (position inside header; not fixed) */
+.app-cmp-main-header > form{
+	position:absolute; top:12px; right:20px; left:auto;
+	display:flex;align-items:center;gap:12px;font-size:1rem;
+	background:transparent;border:none;z-index:1100;justify-content:flex-end;
+}
+.app-cl-code{ display:inline-block;background:#fff;border:1px solid rgba(111,79,58,0.12);
+	padding:8px 14px;border-radius:999px;color:#6f4f3a;box-shadow:0 6px 18px rgba(111,79,58,0.06) }
+
+/* Logout button */
+.app-cmp-main-header > form button{
+	background:#fff;border:1px solid rgba(111,79,58,0.12);color:#6f4f3a;
+	padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;
+}
+
+/* Top bar (user/logout) */
+.top-bar {
+	background: #f4eadf; /* warm beige */
+	border-bottom: 1px solid rgba(16,24,40,0.03);
+}
+.top-bar-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 6px 0; /* vertical padding */
+}
+
+/* auth form inside top bar */
+.top-bar .auth-form {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+}
+
+/* small reset: prevent older absolute/fixed rules from interfering */
+.app-cmp-main-header > form,
+.app-cmp-main-header form.auth-form {
+	position: static !important;
+	top: auto !important;
+	right: auto !important;
+	left: auto !important;
+}
+
+/* USER pill and logout button styling (match theme) */
+.app-cl-code {
+	/* existing visual keeps, ensure visible on top-bar */
+	background: #fff;
+	color: #6f4f3a;
+	padding: 6px 12px;
+	border-radius: 999px;
+	border: 1px solid rgba(111,79,58,0.10);
+	box-shadow: 0 6px 14px rgba(111,79,58,0.04);
+}
+.btn-logout {
+	background: #fff;
+	border: 1px solid rgba(111,79,58,0.10);
+	color: #6f4f3a;
+	padding: 6px 10px;
+	border-radius: 8px;
+	cursor: pointer;
+	font-weight:600;
+}
+
+/* === Navigation band (3-column grid) === */
+.app-cmp-user-panel{
+	display:grid;
+	grid-template-columns:1fr auto 1fr;
+	align-items:center;
+	gap:12px;
+	padding:18px 56px;
+	background:rgba(255,255,255,0.82);
+	backdrop-filter:blur(6px);
+	border-bottom:1px solid rgba(16,24,40,0.04);
+	box-shadow:0 2px 0 rgba(16,24,40,0.02);
+	position:relative;z-index:800;
+}
+
+/* left/right link groups */
+.app-cmp-links-left,
+.app-cmp-links-right{display:flex;align-items:center;gap:28px;font-size:1rem}
+.app-cmp-links-left{justify-self:start}
+.app-cmp-links-right{justify-self:end}
+.app-cmp-links-left a, .app-cmp-links-right a{
+	color:#bfa286;padding:8px 12px;border-radius:10px;font-weight:600;
+	transition:background .14s ease,color .14s ease,transform .12s ease;white-space:nowrap;
+}
+.app-cmp-links-left a:hover, .app-cmp-links-right a:hover{
+	background:rgba(202,166,144,0.06);color:#8f6246;transform:translateY(-4px);
+}
+
+/* centered brand */
+.app-cmp-home{justify-self:center;align-self:center;z-index:3}
+.app-cmp-home .home{
+	font-family:'Georgia','Times New Roman',serif;color:#c49b78;font-weight:700;
+	letter-spacing:0.12em;font-size:2rem;padding:8px 16px;border-radius:12px;
+	transition:transform .12s ease,color .12s ease;
+}
+.app-cmp-home .home:hover{ transform:translateY(-2px); color:#b27f56 }
+
+/* === Hero / Showcase === */
+.hero{ max-width:1100px;margin:12px auto 8px;overflow:visible;position:relative;background:transparent;padding:0 }
+.hero .hero-media{
+	height:260px;background-position:center;background-size:cover;background-repeat:no-repeat;
+	border-radius:12px;box-shadow:0 14px 40px rgba(16,24,40,0.06);margin:0 auto;max-width:100%;
+}
+
+/* === Section intro / CTA === */
+.section-intro{ display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 0 }
+.section-intro .intro-left h2{ margin:0 0 6px 0;font-size:1.9rem;color:#918a86;font-weight:700 }
+.section-intro .intro-left p{ margin:0;color:#b2a9a2;font-size:.95rem }
+.btn-cta{ background:#edd8c5;color:#73513d;padding:10px 18px;border-radius:28px;font-weight:700;
+	box-shadow:0 8px 22px rgba(115,81,61,0.06);border:none;transition:transform .12s ease,box-shadow .12s ease }
+.btn-cta:hover{ transform:translateY(-3px); box-shadow:0 14px 34px rgba(115,81,61,0.08) }
+
+/* === Products grid & Cards === */
+.products-grid{ display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:12px 0;margin-top:0;box-sizing:border-box }
+
+.product-card{
+	background:linear-gradient(180deg,rgba(250,248,247,1),rgba(245,243,242,1));
+	border-radius:14px;overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:12px;
+	align-items:stretch;justify-content:flex-start;box-shadow:0 12px 30px rgba(16,24,40,0.04);
+	min-height:360px;box-sizing:border-box;
+}
+.product-card .card-media{ width:100%;height:220px;border-radius:12px;background-position:center;
+	background-size:cover;background-repeat:no-repeat;box-shadow:0 10px 28px rgba(16,24,40,0.04) }
+.product-card .card-title{ margin:0;color:#bda99a;font-weight:700;font-size:1rem;text-align:left;padding:6px 2px 0 }
+.product-card .card-sub{ margin:0;margin-top:6px;color:#d9cfc6;font-size:.88rem;opacity:.95;
+	text-align:left;padding:8px 2px 0;border-top:1px solid rgba(210,200,194,0.25);padding-top:10px }
+
+/* === Login form small tweak === */
+.log-from{ max-width:380px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));box-shadow:var(--shadow-soft) }
+.log-from h1{ font-size:1.6rem;color:#0f172a;margin:0 0 1rem;font-weight:700 }
+.log-from p{ margin:0 0 .25rem;color:var(--muted);font-size:.95rem }
+.log-from input[type="email"], .log-from input[type="password"]{
+	width:100%;padding:.6rem .75rem;border:1px solid rgba(15,23,42,0.06);border-radius:8px;background:#fff;margin-bottom:.75rem
+}
+.log-from button[type="submit"]{ padding:.6rem 1rem;border-radius:8px;border:none;background:linear-gradient(90deg,var(--accent-1),var(--accent-3));color:#042027;font-weight:600;cursor:pointer }
+
+/* === Footer / Main content spacing === */
+#app-cmp-main-content{ padding:8px 0 56px } /* reduced top spacing to bring content up */
+#app-cmp-main-footer{ padding:22px 0;color:rgba(124,87,63,0.9);font-size:.95rem;text-align:center }
+
+/* === Accessibility / Utility === */
+.no-uppercase{ text-transform:none!important }
+
+/* Header: span edge-to-edge while keeping inner content padded */
+.app-cmp-main-header,
+.top-bar {
+	/* pull header out of body side padding so background spans full viewport */
+	margin-left: calc(-1 * var(--side-pad));
+	margin-right: calc(-1 * var(--side-pad));
+	width: calc(100% + calc(2 * var(--side-pad)));
+	box-sizing: border-box;
+	/* keep inner spacing by preserving existing padding (already on .app-cmp-user-panel) */
+}
+
+/* If top-bar exists, ensure its inner container stays aligned */
+.top-bar .top-bar-inner,
+.app-cmp-main-header .app-cmp-user-panel {
+	max-width: var(--container-width, 1100px);
+	margin: 0 auto;
+	padding-left: var(--side-pad);
+	padding-right: var(--side-pad);
+	box-sizing: border-box;
+}
+
+/* Pin USER / Logout to the right edge of viewport */
+.app-cmp-main-header > form {
+	position: fixed;
+	top: 12px;
+	right: var(--side-pad); /* respect side padding */
+	left: auto;
+	z-index: 1300; /* above header/nav */
+}
+
+/* Visual tweak: ensure fixed form retains styling */
+.app-cmp-main-header > form .app-cl-code,
+.app-cmp-main-header > form button {
+	/* small shadow and white bg ensure contrast over header */
+	background: #fff;
+	box-shadow: 0 6px 14px rgba(16,24,40,0.06);
+}
+
+/* Responsive: on small screens return form into normal flow and reset header spanning */
+@media (max-width: 880px) {
+	.app-cmp-main-header > form {
+		position: relative;
+		top: auto;
+		right: auto;
+		left: auto;
+		z-index: 3;
+	}
+	.app-cmp-main-header,
+	.top-bar {
+		margin-left: 0;
+		margin-right: 0;
+		width: auto;
+	}
+	.top-bar .top-bar-inner,
+	.app-cmp-main-header .app-cmp-user-panel {
+		padding-left: 18px;
+		padding-right: 18px;
+	}
+}
+
+@media (max-width:1000px){
+	.products-grid{ grid-template-columns:repeat(2,1fr) }
+	.product-card{ min-height:320px }
+	.product-card .card-media{ height:200px }
+}
+@media (max-width:880px){
+	.app-cmp-user-panel{ grid-template-columns:1fr;padding:12px 18px;row-gap:8px }
+	.app-cmp-links-left, .app-cmp-links-right{ justify-content:center;flex-wrap:wrap;gap:12px }
+	.app-cmp-main-header > form{ position:relative; top:auto; right:auto; justify-self:end; z-index:3 }
+	.app-cmp-home .home{ font-size:1.4rem;padding:6px 10px }
+	.app-cl-code{ padding:6px 10px; font-size:.95rem }
+	.container{ padding:36px 0 }
+}
+@media (max-width:640px){
+	.products-grid{ grid-template-columns:1fr }
+	.product-card .card-media{ height:180px }
+	.section-intro{ flex-direction:column;align-items:flex-start;gap:12px;padding:12px 0 }
+	:root{ --side-pad:16px }
+}
+
+/* End of file */

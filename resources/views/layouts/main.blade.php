@@ -14,62 +14,52 @@
 
 
 <body>
-    <header id="app-cmp-main-header">
+    <header class="app-cmp-main-header"> 
 
-        <nav class="app-cmp-user-panel">
+		{{-- top bar: user/logout placed here --}}
+		<div class="top-bar">
+			<div class="container top-bar-inner">
+				<div class="top-left">
+					{{-- สามารถใส่ข้อความเล็ก ๆ ชั้นบนหรือโลโก้ย่อยได้ --}}
+				</div>
 
-            <ul class="app-cmp-links">
-                <li>
-                    <a href="{{ route('home') }}">Fittrack</a>
-                </li>
-                {{-- user menu --}}
+				<div class="top-right">
+					<form action="{{ route('logout') }}" method="post" class="auth-form">
+						@csrf
+						<a href="{{ route('users.view-selves') }}" class="app-cl-code">USER</a>
+						<button type="submit" class="btn-logout">Logout</button>
+					</form>
+				</div>
+			</div>
+		</div>
 
-                <li>
-                    <a href="{{ route('shop.view-shop') }}">shop</a>
-                </li>
+		<nav class="app-cmp-user-panel">
 
-                <li>
-                    <a href="{{ route('shop.view-class') }}">fitness Class</a>
-                </li>
+			{{-- left links --}}
+			<div class="app-cmp-links-left">
+				<a href="{{ route('shop.view-shop') }}">Shop</a>
+				<a href="{{ route('shop.view-class') }}">Fitness Class</a>
+				<a href="#">My Order</a>
+			</div>
 
-                <li>
-                    <a href="">My Order</a>
-                </li>
+			{{-- centered brand --}}
+			<div class="app-cmp-home">
+				<a href="{{ route('home') }}" class="home">Fittrack</a>
+			</div>
 
-                {{-- Admin Menu --}}
-                <li>
-                    <a href="">Order</a>
-                </li>
+			{{-- right links --}}
+			<div class="app-cmp-links-right">
+				<a href="#">Order</a>
+				<a href="{{ route('fitnessclass.list') }}">Classes</a>
+				<a href="{{ route('products.list') }}">Products</a>
+				<a href="{{ route('category.list') }}">Category</a>
+			</div>
 
-                <li>
-                    <a href="{{ route('fitnessclass.list') }}">fitness Class</a>
-                </li>
-                <li><a href="{{ route('products.list') }}">Product</a>
-                </li>
-
-                <li>
-                    <a href="{{ route('category.list') }}">Category</a>
-                </li>
-            </ul>
-
-        </nav>
-
-
-
-        <form action="{{ route('logout') }}" method="post">
-
-            @csrf
-
-            <a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ \Auth::user()->name }}</a>
-
-            <button type="submit">Logout</button>
-
-        </form>
-
-    </header>
+		</nav>
+	</header>
 
 
-    <main id="app-cmp-main-content">
+    <main id="app-cmp-main-content" style="padding-top:8px;">
         <header>
             <h1></h1>
             <div class="app-cmp-notifications">
