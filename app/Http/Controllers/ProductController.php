@@ -54,19 +54,33 @@ class ProductController extends SearchableController
      */
     public function create(ServerRequestInterface $request, CategoryController $categoryController): RedirectResponse
     {
-        $data = $request->getParsedBody();
-        $category = $categoryController->find($data['category']);
-
-
         try {
+            $data = $request->getParsedBody();
+            $category = $categoryController->find($data['category']); // ดึง Category
+
+            // อัปโหลดไฟล์รูป
+            $uploadedFiles = $request->getUploadedFiles();
+
+            if (isset($uploadedFiles['img'])) {
+                $file = $uploadedFiles['img'];
+                $filename = $file->getClientFilename();
+
+                $destination = storage_path('app/public/img_product/');
+                if (!file_exists($destination)) {
+                    mkdir($destination, 0755, true);
+                }
+
+                $file->moveTo($destination . $filename);
+                $data['img'] = $filename;
+            }
+
+            // สร้าง Product แล้ว associate กับ Category
             $product = new Product();
             $product->fill($data);
-            $product->category()->associate($category);
+            $product->category()->associate($category); // set category_id
             $product->save();
 
-            return redirect(
-                session()->get('bookmarks.products.create-form', route('products.list'))
-            )
+            return redirect(session()->get('bookmarks.products.create-form', route('products.list')))
                 ->with('status', "Product {$product->code} was created.");
         } catch (QueryException $excp) {
             return redirect()->back()->withInput()->withErrors([
@@ -74,6 +88,7 @@ class ProductController extends SearchableController
             ]);
         }
     }
+
 
     /**
      * Display the specified resource.

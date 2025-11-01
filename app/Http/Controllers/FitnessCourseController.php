@@ -66,7 +66,7 @@ class FitnessCourseController extends SearchableController
                 $filename = $file->getClientFilename();
 
                 // ตรวจสอบโฟลเดอร์ก่อนย้ายไฟล์
-                $destination = storage_path('app/public/img_cat/');
+                $destination = storage_path('app/public/img_class/');
                 if (!file_exists($destination)) {
                     mkdir($destination, 0755, true);
                 }

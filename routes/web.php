@@ -6,14 +6,34 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Models\FitnessCourse;
+use App\Http\Controllers\CartController;
+// for user
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::controller(HomeController::class)
-    ->prefix('')
-    ->name('')
+    ->prefix('/shop')
+    ->name('shop.')
     ->group(function () {
-        Route::get('', 'Home')->name('home');
+        Route::get('/', 'viewshop')->name('view-shop');
+        Route::get('/class', 'viewclass')->name('view-class');
     });
 
+
+
+
+Route::controller(CartController::class)
+    ->prefix('cart') // prefix /cart
+    ->name('cart.')
+    ->group(function () {
+        Route::get('/', 'viewcart')->name('view-cart');              // cart.view-cart
+        Route::post('/add/{id}', 'add')->name('add');               // cart.add
+        Route::get('/remove/{code}', 'remove')->name('remove');     // cart.remove
+        Route::post('/update/{code}',  'updateQuantity')->name('updateQuantity');
+    });
+
+
+
+// for Admin 
 
 Route::controller(CategoryController::class)
     ->prefix('/category')
