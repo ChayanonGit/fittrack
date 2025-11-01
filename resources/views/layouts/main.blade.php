@@ -33,13 +33,13 @@
 
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
-                            <button type="submit" class="app-cl-code"
-                                style="background:none; border:none; cursor:pointer;">Logout</button>
+                            <button type="submit" class="btn-custom"
+                    >Logout</button>
                         </form>
                     @endauth
 
                     @guest
-                        <a id="loginBtn" class="app-cl-code">Login</a>
+                        <button id="loginBtn" class="btn-custom">Login</button>
                     @endguest
 
 
@@ -106,22 +106,16 @@
 </body>
 
 <div id="loginModal" class="modal">
-    <div class="modal-content">
-        <span class="close">X</span>
-        <h2>Login</h2>
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <div>
-                <label>Email:</label>
-                <input type="email" name="email" required>
-            </div>
-            <div>
-                <label>Password:</label>
-                <input type="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-    </div>
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Login</h2>
+    <form method="POST" action="{{ route('login') }}">
+      @csrf
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 </div>
 
 

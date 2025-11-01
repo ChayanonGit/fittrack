@@ -32,7 +32,7 @@ class LoginController extends Controller
 
         session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
     function authenticate(ServerRequestInterface $request): RedirectResponse
     {

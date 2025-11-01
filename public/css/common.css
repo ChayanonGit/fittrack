@@ -276,3 +276,37 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 }
 
 /* End of file */
+/* === Stylish Buttons === */
+.btn-custom {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(90deg, #bda99a, #74461b); /* ไล่สีม่วง -> น้ำเงิน */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom:hover {
+       background: linear-gradient(90deg, #4f46e5, #3b82f6); /* สลับสีเวลาหยุด hover */
+
+/* สลับสีเวลาหยุด hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn-custom:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
