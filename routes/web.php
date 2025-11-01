@@ -79,3 +79,13 @@ Route::controller(FitnessCourseController::class)
             Route::get('/delete', 'delete')->name('delete');
         });
     });
+
+    Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+
+// ...existing code...
+Route::get('/auth/login', function () {
+    return view('auth.login'); // หรือ return redirect()->route('login');
+});
