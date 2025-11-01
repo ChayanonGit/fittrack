@@ -56,11 +56,11 @@
 
 
 
-        <form action="" method="post">
+        <form action="{{ route('logout') }}" method="post">
 
             @csrf
 
-            <a href="" class="app-cl-code"></a>
+            <a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ \Auth::user()->name }}</a>
 
             <button type="submit">Logout</button>
 
@@ -87,7 +87,7 @@
     <footer id="app-cmp-main-footer">
         &#xA9; from fittrack
     </footer>
-   <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
     @yield('scripts')
 </body>
 
