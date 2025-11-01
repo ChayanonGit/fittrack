@@ -16,7 +16,7 @@
 
             <ul class="app-cmp-links">
                 <li>
-                    <a href="{{ route('fittrack.home') }}">Fittrack</a>
+                    <a href="{{ route('fittrack.home') }}">Fittrack2313132131</a>
                     
                 </li>
                 <li>
