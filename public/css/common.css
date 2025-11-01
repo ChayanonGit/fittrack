@@ -190,7 +190,7 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 
 /* === Footer / Main content spacing === */
 #app-cmp-main-content{ padding:8px 0 56px } /* reduced top spacing to bring content up */
-#app-cmp-main-footer{ padding:22px 0;color:rgba(124,87,63,0.9);font-size:.95rem;text-align:center }
+#app-cmp-main-footer{ padding:22px 0;color:rgba(124,87,63,0.9);font-size:.95rem;text-align:center;bottom: 0; }
 
 /* === Accessibility / Utility === */
 .no-uppercase{ text-transform:none!important }
