@@ -25,12 +25,10 @@
             </select>
 
             <label for="app-inp-price">Price</label>
-            <input type="number" id="app-inp-price" name="price" step="any" value="{{ $product->price }}"
-                required />
+            <input type="number" id="app-inp-price" name="price" step="any" value="{{ $product->price }}" required />
 
             <label for="app-inp-price">Qty</label>
-            <input type="number" id="app-inp-price" name="stock" step="any" value="{{ $product->stock }}"
-                required />
+            <input type="number" id="app-inp-price" name="stock" step="any" value="{{ $product->stock }}" required />
 
         </div>
 
