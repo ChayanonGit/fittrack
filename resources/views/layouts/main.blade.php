@@ -27,6 +27,11 @@
                 <div class="top-left"></div>
 
                 <div class="top-right">
+                        @if (Auth::check() && Auth::user()->role === 'ADMIN')
+                            <a href="" class=""></a>
+                        @else
+                            <a href="{{ route('cart.view-cart') }}" class="app-cl-code">CART</a>
+                        @endif
                     @auth
                         <a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ Auth::user()->name }}</a>
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">

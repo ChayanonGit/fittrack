@@ -71,9 +71,7 @@
                     <a class="btn-cta" href="{{ route('shop.view-shop') }}">SHOP ALL PRODUCTS</a>
                 </div>
 			@endif
-
     </section>
-
     <section class="container">
         <div class="products-grid">
             <a href="{{ route('shop.view-shop') }}">
@@ -81,7 +79,7 @@
                     <div class="card-media"
                         style="background-image:url('https://sc04.alicdn.com/kf/H10b22a60bed64eb2a92f9739b8397f49m.jpg');">
                     </div>
-                    <div class="card-title">Bracelet Weights </div>
+                    <div class="card-title">fitness machines </div>
 
                 </div>
             </a>
@@ -90,7 +88,7 @@
                     <div class="card-media"
                         style="background-image:url('https://th-live.slatic.net/p/ff1ebdd3044f9506fcd91fe184478a6d.jpg');">
                     </div>
-                    <div class="card-title">Exercise Ball</div>
+                    <div class="card-title">fitness equipment</div>
 
                 </div>
             </a>
@@ -100,7 +98,7 @@
                     <div class="card-media"
                         style="background-image:url('https://static.thairath.co.th/media/Dtbezn3nNUxytg04ajbQINgpa9ZDJFUvR6iZ9GEO8e9fKf.jpg');">
                     </div>
-                    <div class="card-title">Hand Weights</div>
+                    <div class="card-title">Supplements</div>
 
                 </div>
             </a>
@@ -133,7 +131,6 @@
                     <a class="btn-cta" href="{{ route('shop.view-class') }}">ALL FITNESS CLASS</a>
                 </div>
 			@endif
-
     </section>
     <section class="container">
         <div class="products-grid">
@@ -152,7 +149,7 @@
                     <div class="card-media"
                         style="background-image:url('https://static.thairath.co.th/media/dFQROr7oWzulq5Fa4MLxHgPwY5hp4zj8OkUnvxFunQAcHWiYVRZrzkZrfyoMLWCIVlx.jpg'); height:200px;">
                     </div>
-                    <div class="card-title">Strength Training</div>
+                    <div class="card-title">weight training</div>
 
                 </div>
             </a>
@@ -162,7 +159,7 @@
                     <div class="card-media"
                         style="background-image:url('https://dbfitness.co.nz/wp-content/uploads/2022/06/blog-1.jpg'); height:200px;">
                     </div>
-                    <div class="card-title">HIIT Sessions</div>
+                    <div class="card-title">cardio</div>
 
                 </div>
             </a>
