@@ -179,6 +179,85 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 .product-card .card-sub{ margin:0;margin-top:6px;color:#d9cfc6;font-size:.88rem;opacity:.95;
 	text-align:left;padding:8px 2px 0;border-top:1px solid rgba(210,200,194,0.25);padding-top:10px }
 
+/* Shop grid & product card styles */
+.shop-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 20px;
+	padding: 8px 0;
+	margin: 0 auto;
+}
+
+/* Card */
+.product-card {
+	background: linear-gradient(180deg, rgba(250,248,247,1), rgba(245,243,242,1));
+	border-radius: 14px;
+	overflow: hidden;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	box-shadow: 0 10px 30px rgba(16,24,40,0.04);
+}
+
+/* Image area */
+.product-media {
+	width: 100%;
+	height: 220px;
+	border-radius: 12px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f3f3f3;
+}
+.product-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* placeholder when no image */
+.product-media.placeholder {
+	background: #ff4d4d; /* red placeholder per request */
+}
+
+/* Meta row: name left, price right */
+.product-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 6px 4px 0 4px;
+}
+.product-name {
+	color: #6b6b6b;
+	font-weight: 700;
+	font-size: 0.95rem;
+	text-align: left;
+}
+.product-price {
+	color: #6b6b6b;
+	font-weight: 700;
+	font-size: 0.95rem;
+}
+
+/* Actions */
+.product-actions { padding-top: 6px; display:flex; justify-content:flex-start; }
+.btn-add {
+	background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+	color: #042027;
+	padding: 8px 12px;
+	border-radius: 12px;
+	border: none;
+	font-weight: 700;
+	cursor: pointer;
+	transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn-add:active { transform: translateY(1px); }
+.btn-add:hover { box-shadow: 0 12px 30px rgba(16,24,40,0.06); }
+
 /* === Login form small tweak === */
 .log-from{ max-width:380px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));box-shadow:var(--shadow-soft) }
 .log-from h1{ font-size:1.6rem;color:#0f172a;margin:0 0 1rem;font-weight:700 }
@@ -309,4 +388,150 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 .btn-custom:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* Category page: modern pastel cards */
+.category-list { margin: 8px auto 36px; max-width: 1100px; }
+.category-list-title {
+	font-size: 1.6rem;
+	color: #7a5a42;
+	margin: 8px 0 12px;
+	letter-spacing: 0.06em;
+}
+
+/* responsive grid */
+.category-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 20px;
+}
+
+/* card */
+.category-card {
+	background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,248,247,0.9));
+	border-radius: 12px;
+	overflow: hidden;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: stretch;
+	box-shadow: 0 12px 30px rgba(16,24,40,0.05);
+	transition: transform .14s ease, box-shadow .14s ease;
+}
+.category-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(16,24,40,0.07); }
+
+/* media */
+.category-media {
+	width: 100%;
+	height: 160px;
+	border-radius: 10px;
+	overflow: hidden;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.category-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* placeholder (red) when no image */
+.category-placeholder {
+	width: 100%;
+	height: 100%;
+	background: #ff4d4d;
+	border-radius: 8px;
+}
+
+/* meta */
+.category-meta { padding: 4px 2px; display: flex; flex-direction: column; gap: 6px; }
+.category-name { margin: 0; color: #8f6f55; font-weight: 700; font-size: 1.02rem; }
+.category-desc { margin: 0; color: #9b8f86; font-size: 0.92rem; }
+
+/* actions */
+.category-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 8px; }
+.btn-ghost {
+	background: transparent;
+	border: 1px solid rgba(143,111,85,0.10);
+	color: #7a5a42;
+	padding: 8px 12px;
+	border-radius: 10px;
+	text-decoration: none;
+	font-weight: 600;
+	transition: background .12s ease, transform .12s ease;
+}
+.btn-ghost:hover { background: rgba(143,111,85,0.06); transform: translateY(-2px); }
+
+/* Category card action buttons */
+.category-actions .btn-view,
+.category-actions .btn-edit,
+.category-actions .btn-delete {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 10px 14px;
+	border-radius: 10px;
+	font-weight: 700;
+	font-size: 0.9rem; /* keep compact */
+	cursor: pointer;
+	transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+	text-decoration: none;
+	border: 1px solid rgba(16,24,40,0.06);
+	background: #fff;
+	color: #6f4f3a;
+	box-shadow: 0 8px 20px rgba(16,24,40,0.04);
+}
+
+/* specific styles */
+.category-actions .btn-view {
+	background: #fff;
+	color: #6f4f3a;
+}
+.category-actions .btn-edit {
+	background: linear-gradient(180deg, rgba(248,246,245,1), rgba(242,240,239,1));
+	color: #5f4636;
+}
+.category-actions .btn-delete {
+	background: #fff;
+	border-color: rgba(255,77,77,0.18);
+	color: #c0392b;
+}
+
+/* hover states */
+.category-actions .btn-view:hover,
+.category-actions .btn-edit:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 14px 34px rgba(16,24,40,0.06);
+}
+.category-actions .btn-delete:hover {
+	background: rgba(255,77,77,0.06);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 26px rgba(192,57,43,0.06);
+}
+
+/* ensure <button> inside form uses same visuals */
+.inline-form .btn-delete {
+	border: 1px solid rgba(255,77,77,0.18);
+	padding: 10px 14px;
+	background: #fff;
+}
+
+/* responsive tweaks */
+@media (max-width: 880px) {
+	.category-media { height: 140px; }
+	.category-name { font-size: 1rem; }
+	.category-desc { font-size: 0.9rem; }
+}
+@media (max-width: 640px) {
+	.category-media { height: 120px; }
+	.category-card { padding: 10px; }
+	.category-actions { gap: 8px; }
+	.category-actions .btn-view,
+	.category-actions .btn-edit,
+	.category-actions .btn-delete { padding: 8px 10px; font-size: 0.9rem; }
 }
