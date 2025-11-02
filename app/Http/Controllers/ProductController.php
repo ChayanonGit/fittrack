@@ -33,7 +33,7 @@ class ProductController extends SearchableController
 
         return view('products.list', [
             'criteria' => $criteria,
-            'products' => $query->paginate(self::MAX_ITEMS),
+            'products' => $query->paginate(8),
         ]);
     }
 

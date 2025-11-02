@@ -34,7 +34,7 @@ class CategoryController extends SearchableController
         }
 
         // Paginate 5 ต่อหน้า
-        $category = $query->paginate(self::MAX_ITEMS);
+        $category = $query->paginate(8);
 
         // ส่งข้อมูลไป Blade
         return view('category.list', [
