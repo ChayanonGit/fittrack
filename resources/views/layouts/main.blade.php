@@ -18,7 +18,8 @@
 
 
 <body
-    @if (session('success')) onload="Swal.fire('สำเร็จ!', '{{ session('success') }}', 'success')"
+    @if (session('success')) 
+		onload="Swal.fire('สำเร็จ!', '{{ session('success') }}', 'success')"
     @elseif(session('error'))
         onload="Swal.fire('เกิดข้อผิดพลาด!', '{{ session('error') }}', 'error')" @endif>
 
