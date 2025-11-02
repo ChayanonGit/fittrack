@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Models\FitnessCourse;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
 use App\Models\OrderDetail;
@@ -50,6 +51,9 @@ Route::middleware([
             Route::get('/remove/{code}', 'remove')->name('remove');     // cart.remove
             Route::post('/update/{code}',  'updateQuantity')->name('updateQuantity');
             Route::post('/cart',  'checkout')->name('checkout');
+           
+
+
         });
 
 
@@ -82,6 +86,17 @@ Route::middleware([
             Route::prefix('/{product}')->group(function () {
                 Route::post('/update', 'product_update')->name('update');
                 Route::get('/delete', 'product_delete')->name('delete');
+            });
+        });
+
+    Route::controller(OrderController::class)
+        ->prefix('admin/order')
+        ->name('admin.order.')
+        ->group(function () {
+            Route::get('/', 'vieworder')->name('view-order');
+            Route::prefix('/{orderCode}')->group(static function (): void {
+                Route::get('/detail', 'orderDetail')->name('view-detail');
+                Route::get('/delete', 'delete')->name('delete');
             });
         });
 

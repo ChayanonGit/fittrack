@@ -1,11 +1,11 @@
-@extends('orderlist.main')
+@extends('orders.main')
 
 @section('header')
 @endsection
 
 @section('content')
-    Product List<br>
-    <a href="{{ route('shop.view-shop') }}">Shop</a>
+    Order List<br>
+    {{-- <a href="{{ route('shop.view-shop') }}">Shop</a> --}}
 
     <div class="pd-data-list">
         <table>
@@ -25,6 +25,7 @@
                             <p>Products:
                                 @php
                                     $firstDetail = $order->orderDetails->first();
+
                                 @endphp
 
                                 @if ($firstDetail)
@@ -39,16 +40,13 @@
                             <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * $d->product->price) }}</p>
                             <p>Order Status :{{ $order->status }}</p>
 
-                            <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
+                            <a href="{{ route('admin.order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
 
 
 
 
                         </div>
                     @endforeach
-
-                    {{ $orders->links() }}
-
 
                     {{ $orders->links() }}
 

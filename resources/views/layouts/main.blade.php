@@ -85,7 +85,7 @@
 				@if(Auth::user()->role === 'ADMIN')
 				{{-- left links --}}
 					<div class="app-cmp-links-right">
-						<a href="">Order</a>
+						<a href="{{route('admin.order.view-order')}}">Order</a>
 						<a href="{{ route('fitnessclass.list') }}">Classes</a>
 						<a href=""></a>
 					</div>
