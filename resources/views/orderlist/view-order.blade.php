@@ -5,7 +5,7 @@
 
 @section('content')
     Product List<br>
-    <a href="{{ route('products.create-form') }}">Add Product</a>
+    <a href="{{ route('shop.view-shop') }}">Shop</a>
 
     <div class="pd-data-list">
         <table>

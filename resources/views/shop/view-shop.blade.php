@@ -29,10 +29,6 @@
 
 
                 <div>
-                    <form action="{{ route('cart.add', $shops->code) }}" method="POST">
-                        @csrf
-                        <button type="submit">Add to cart</button>
-                    </form>
 
                     <div class="product-meta">
                         <div class="product-name">{{ $shops->name }}</div>
