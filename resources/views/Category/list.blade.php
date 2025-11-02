@@ -26,7 +26,7 @@
 							@if ($categorys->img)
 								<img src="{{ asset('storage/img_cat/' . $categorys->img) }}" alt="{{ $categorys->name }}" width="100">
 							@else
-								<div style="width:100px;height:100px;background:#ff4d4d;border-radius:8px;"></div>
+								<div ></div>
 							@endif
 						</td>
 						<td>{{ $categorys->code }}</td>
