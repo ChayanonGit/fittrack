@@ -5,7 +5,7 @@
 
 @section('content')
     Product Category<br>
-    <a href="{{ route('category.create-form') }}">New Category</a>
+    <a href="{{ route('products.create') }}">New Product</a>
 
     <div class="cg-data-list">
         <table>
@@ -45,12 +45,16 @@
                         <td>{{ $products->stock ?? '-' }}</td>
                         <td>
 
-                        <td><a href="{{ route('products.update-form', ['product' => $products->code,'from_category' => $category->code]) }}">Edit</a>
+                        <td><a
+                                href="{{ route('products.update-form', ['product' => $products->code, 'from_category' => $category->code]) }}">Edit</a>
 
                             </form>
-
-                            <a
-                                href="{{ route('products.delete', ['product' => $products->code, 'from_category' => $category->code]) }}">Delete</a>
+                            <a href="{{ route('products.delete', ['product' => $products->code, 'from_category' => $category->code]) }}" class="btn-delete"
+                                data-name="{{ $products->name }}">
+                                Delete
+                            </a>
+           
+                               
                         </td>
                     </tr>
                 @endforeach

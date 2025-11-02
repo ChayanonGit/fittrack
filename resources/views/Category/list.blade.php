@@ -31,7 +31,7 @@
                         <div class="category-meta">
                             <h3 class="category-name">{{ $categorys->code }}</h3>
                             <h3 class="category-name ">{{ $categorys->name }}</h3>
-					<p class="category-desc">
+                            <p class="category-desc">
                                 {{ Str::limit($categorys->description ?? '', 100) }}</p>
                         </div>
 
@@ -46,8 +46,11 @@
 
                             {{-- Delete (real DELETE request) --}}
 
-                            <a href="{{ route('category.delete', ['category' => $categorys->code]) }}"
-                                class="btn-delete">delete</a>
+
+                            <a href="{{ route('category.delete', ['category' => $categorys->code]) }}" class="btn-delete"
+                                data-name="{{ $categorys->name }}">
+                                Delete
+                            </a>
                         </div>
                 </article>
             @endforeach

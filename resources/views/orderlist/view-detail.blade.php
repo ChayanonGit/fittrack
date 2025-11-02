@@ -17,6 +17,7 @@
             <tr>
                 <td><img src="{{ asset('storage/img_product/' . $detail->product->img) }}"
                         alt="{{ $detail->product->name }}" width="100"></td>
+
                 <td>{{ $detail->product->name }}</td>
                 <td>{{ $detail->quantity }}</td>
                 <td>{{ $detail->product->price }}</td>
@@ -25,7 +26,7 @@
 
             </tr>
         @endforeach
-                <td><a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Cancel</a></td>
+        <td><a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Cancel</a></td>
 
     </tbody>
 </table>

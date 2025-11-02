@@ -27,3 +27,4 @@ document.addEventListener('DOMContentLoaded', function () {
             count = 1;
         }
     }, 2500);
+

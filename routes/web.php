@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Models\FitnessCourse;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
 use App\Models\OrderDetail;
@@ -85,7 +86,16 @@ Route::middleware([
             });
         });
 
-    Route::controller(ProductController::class)
+  Route::controller(OrderController::class)
+        ->prefix('admin/order')
+        ->name('admin.order.')
+        ->group(function () {
+            Route::get('/', 'vieworder')->name('view-order');
+            Route::prefix('/{orderCode}')->group(static function (): void {
+                Route::get('/detail', 'orderDetail')->name('view-detail');
+                Route::get('/delete', 'delete')->name('delete');
+            });
+        });    Route::controller(ProductController::class)
         ->prefix('/products')
         ->name('products.')
         ->group(function () {

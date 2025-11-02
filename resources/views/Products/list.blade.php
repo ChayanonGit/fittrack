@@ -35,8 +35,11 @@
 
                         <a href="{{ route('products.update-form', ['product' => $product->code]) }}"
                             class="btn-edit">Edit</a>
-                        <a href="{{ route('products.delete', ['product' => $product->code]) }}"
-                            class="btn-delete">Delete</a>
+                        <a href="{{ route('products.delete', ['product' => $product->code]) }}" class="btn-delete"
+                            data-name="{{ $product->name }}">
+                            Delete
+                        </a>
+
 
 
 

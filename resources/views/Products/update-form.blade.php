@@ -16,11 +16,13 @@
 
             <label for="app-inp-description">Category</label>
             <select name="category" id="">
-                <option value="" selected>---Please Select---</option>
+                <option value="" {{ old('category', optional($product->category)->code) ? '' : 'selected' }}>---Please
+                    Select---</option>
                 @foreach ($category as $cate)
-                    <option value="{{ $cate->code }}" @selected($cate->code === old('category', $product->category->code))
-                        @if ($product->category->code === $cate->code) selected @endif>
-                        [{{ $cate->code }}] {{ $cate->name }}</option>
+                    <option value="{{ $cate->code }}"
+                        {{ $cate->code === old('category', optional($product->category)->code) ? 'selected' : '' }}>
+                        [{{ $cate->code }}] {{ $cate->name }}
+                    </option>
                 @endforeach
             </select>
 
@@ -28,7 +30,8 @@
             <input type="number" id="app-inp-price" name="price" step="any" value="{{ $product->price }}" required />
 
             <label for="app-inp-price">Qty</label>
-            <input type="number" id="app-inp-price" name="stock" step="any" value="{{ $product->stock }}" required />
+            <input type="number" id="app-inp-price" name="stock" step="any" value="{{ $product->stock }}"
+                required />
 
         </div>
 

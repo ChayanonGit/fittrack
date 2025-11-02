@@ -36,7 +36,7 @@
                                 <p>Order Name:{{ $firstDetail->product->name }}</p>
                             @endif
 
-                            <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * $d->product->price) }}</p>
+                            <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * $firstDetail->product->price) }}</p>
                             <p>Order Status :{{ $order->status }}</p>
 
                             <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
