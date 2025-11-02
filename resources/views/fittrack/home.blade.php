@@ -46,6 +46,7 @@
 
                 </div>
             </div>
+        </div>
     <section class="section-intro container">
         <div class="intro-left">
             <h2>Movement Made Stylish.</h2>

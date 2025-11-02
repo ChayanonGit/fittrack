@@ -26,7 +26,10 @@
 				</div>
 
 				<div class="top-right">
-					<a href="{{ route('cart.view-cart') }}" class="app-cl-code">cart</a>
+					
+					@if(Auth::check())
+					@if(Auth::user()->role === 'ADMIN')
+						<a href="" class=""></a>
 
 					@auth
 					<a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ Auth::user()->name }}</a>
@@ -40,9 +43,39 @@
 					@guest
 					<button id="loginBtn" class="btn-custom">Login</button>
 					@endguest
+					@else
+					{{-- user menu --}}
+						<a href="{{ route('cart.view-cart') }}" class="app-cl-code">cart</a>
 
+					@auth
+					<a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ Auth::user()->name }}</a>
 
+					<form action="{{ route('logout') }}" method="POST" style="display:inline;">
+						@csrf
+						<button type="submit" class="btn-custom">Logouts</button>
 					</form>
+					@endauth
+
+					@guest
+					<button id="loginBtn" class="btn-custom">Login</button>
+					@endguest
+					@endif
+					@else
+						<a href="" class=""></a>
+
+					@auth
+					<a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ Auth::user()->name }}</a>
+
+					<form action="{{ route('logout') }}" method="POST" style="display:inline;">
+						@csrf
+						<button type="submit" class="btn-custom">Logouts</button>
+					</form>
+					@endauth
+
+					@guest
+					<button id="loginBtn" class="btn-custom">Login</button>
+					@endguest
+					@endif
 				</div>
 			</div>
 		</div>
