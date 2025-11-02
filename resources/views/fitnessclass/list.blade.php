@@ -1,11 +1,12 @@
 @extends('fitnessclass.main')
 
 @section('header')
+    <link rel="stylesheet" href="{{ asset('css/fitnessclass.css') }}">
 @endsection
 
 @section('content')
-    Product Category<br>
-    <a href="{{ route('fitnessclass.create-class') }}">New Class</a>
+    <h2>Product Category</h2>
+    <a href="{{ route('fitnessclass.create-class') }}" class="new-class-btn">+ New Class</a>
 
     <div class="cg-data-list">
         <table>
@@ -24,23 +25,20 @@
                     <tr>
                         <td>
                             @if ($classes->img)
-                                <img src="{{ asset('storage/img_cat/' . $classes->img) }}" alt="{{ $classes->name }}"
-                                    width="100">
+                                <img src="{{ asset('storage/img_cat/' . $classes->img) }}" alt="{{ $classes->name }}" width="100">
                             @endif
                         </td>
                         <td>{{ $classes->code }}</td>
                         <td>{{ $classes->name }}</td>
                         <td>{{ $classes->price }}</td>
-                        <td>{{ $classes->description}}</td>
+                        <td>{{ $classes->description }}</td>
                         <td>
                             <a href="{{ route('fitnessclass.update-class', ['class' => $classes->code]) }}">Edit</a>
                             <a href="{{ route('fitnessclass.delete', ['class' => $classes->code]) }}">Delete</a>
                         </td>
                     </tr>
-                    
                 @endforeach
             </tbody>
         </table>
-
     </div>
 @endsection
