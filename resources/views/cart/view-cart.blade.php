@@ -16,9 +16,11 @@
                 <th>ลบ</th>
             </tr>
             @foreach ($cart as $code => $item)
-            <tr data-code="{{ $code }}">
-                    <td><img src="{{ asset('storage/img_product/' . $item['img']) }}"
-                            alt="{{ $item['name'] }}" width="100"></td>
+                <tr data-code="{{ $code }}" data-type="{{ $item['type'] ?? 'product' }}">
+                    <td>
+                        <img src="{{ asset('storage/img_product/' . ($item['img'] ?? 'default.png')) }}"
+                            alt="{{ $item['name'] }}" width="100">
+                    </td>
                     <td>{{ $item['name'] }}</td>
                     <td class="price">{{ number_format($item['price']) }}</td>
                     <td>
@@ -29,7 +31,9 @@
                     <td><a href="{{ route('cart.remove', $code) }}">ลบ</a></td>
                 </tr>
             @endforeach
+
             <p>รวมทั้งหมด: <span id="grand-total">{{ number_format($grandTotal) }}</span></p>
+
 
 
 
