@@ -38,11 +38,25 @@ class LoginController extends Controller
     {
 
         // get credentials from user.
+        $data = $request->getParsedBody();
+
+        $credentials = [
+
+            'email' => $data['email'],
+
+            'password' => $data['password'],
+
+        ];
 
         // authenticate by using method attempt()
-
+        if (Auth::attempt($credentials)) {
+            session()->regenerate();
+            return redirect()->intended(route('products.list'));
+        }
         // if cannot authenticate redirect back to loginForm with error message.
-
+        return redirect()->back()->withErrors([
+            'credentials' => 'The provided credentials do not match our records.',
+        ]);
         $validator = Validator::make(
 
             $request->getParsedBody(),

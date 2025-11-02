@@ -71,9 +71,7 @@
                     <a class="btn-cta" href="{{ route('shop.view-shop') }}">SHOP ALL PRODUCTS</a>
                 </div>
 			@endif
-
     </section>
-
     <section class="container">
         <div class="products-grid">
             <a href="{{ route('shop.view-shop') }}">
@@ -133,7 +131,6 @@
                     <a class="btn-cta" href="{{ route('shop.view-class') }}">ALL FITNESS CLASS</a>
                 </div>
 			@endif
-
     </section>
     <section class="container">
         <div class="products-grid">
