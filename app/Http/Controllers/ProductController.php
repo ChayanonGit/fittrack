@@ -57,7 +57,9 @@ class ProductController extends SearchableController
         try {
             $data = $request->getParsedBody();
             $category = $categoryController->find($data['category']); // ดึง Category
-
+            if (Product::where('code', $data['code'])->exists()) {
+                return redirect()->back()->withInput()->with('error', "Code {$data['code']} มีอยู่แล้ว!");
+            }
             // อัปโหลดไฟล์รูป
             $uploadedFiles = $request->getUploadedFiles();
 
@@ -81,11 +83,10 @@ class ProductController extends SearchableController
             $product->save();
 
             return redirect(session()->get('bookmarks.products.create-form', route('products.list')))
-                ->with('status', "Product {$product->code} was created.");
+                ->with('success', "Product {$product->code} ถูกสร้างเรียบร้อยแล้ว!");
         } catch (QueryException $excp) {
-            return redirect()->back()->withInput()->withErrors([
-                'alert' => $excp->errorInfo[2],
-            ]);
+            // ส่ง session สำหรับ SweetAlert error
+            return redirect()->back()->withInput()->with('error', $excp->errorInfo[2]);
         }
     }
 
@@ -96,7 +97,7 @@ class ProductController extends SearchableController
     function showUpdateForm(request $request, string $productCode): View
     {
         $fromCategory = $request->query('from_category');
-        $product = Product::where('code', $productCode)->firstOrFail();
+        $product = Product::with('category')->where('code', $productCode)->firstOrFail();
         $category = Category::all();
         return view('products.update-form', [
             'product' => $product,
@@ -126,24 +127,26 @@ class ProductController extends SearchableController
         $fromCategory = $data['from_category'] ?? null;
 
         try {
+            if (isset($data['code']) && Product::where('code', $data['code'])->where('id', '!=', $product->id)->exists()) {
+                return redirect()->back()->withInput()->with('error', "Code {$data['code']} มีอยู่แล้ว!");
+            }
             $product->fill($data);
             $product->category()->associate($category);
             $product->save();
+
             if ($fromCategory) {
                 return redirect()
                     ->route('category.view-product', ['category' => $fromCategory])
-                    ->with('status', "Product {$product->code} was updated.");
+                    ->with('success', "Category {$category->code} อัพสำเร็จ!");
             }
             return redirect()
                 ->route('products.list', [
                     'product' => $product->code,
                 ])
-                ->with('status', "Product {$product->code} was updated.");
+                ->with('success', " {$product->code} อัพเดทสำเร็จ!");
         } catch (QueryException $excp) {
-            return redirect()->back()->withInput()->withErrors([
-                'alert' => $excp->errorInfo[2],
-
-            ]);
+            // ส่ง session สำหรับ SweetAlert error
+            return redirect()->back()->withInput()->with('error', $excp->errorInfo[2]);
         }
     }
 
@@ -156,18 +159,19 @@ class ProductController extends SearchableController
 
         try {
             $product->delete();
+
+            $successMessage = "{$product->code} Delete Success!";
             if ($request->has('from_category')) {
                 return redirect()
                     ->route('category.view-product', ['category' => $request->input('from_category')])
-                    ->with('status', "Product {$product->code} was deleted.");
+                    ->with('success', $successMessage);
             }
 
             return redirect(
                 session()->get('bookmarks.products.list', route('products.list'))
             )
-                ->with('status', "Product {$product->code} was deleted.");
+                ->with('success', $successMessage);
         } catch (QueryException $excp) {
-
             return redirect()->back()->withErrors([
                 'alert' => $excp->errorInfo[2],
             ]);

@@ -32,7 +32,7 @@ class LoginController extends Controller
 
         session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'You have logged out successfully!');
     }
     function authenticate(ServerRequestInterface $request): RedirectResponse
     {
@@ -76,7 +76,8 @@ class LoginController extends Controller
 
             // to route products.list if does not specify
 
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('home'))
+                ->with('success', 'Login successful!');
         }
         $validator
 
@@ -94,6 +95,7 @@ class LoginController extends Controller
 
             ->back()
 
-            ->withErrors($validator);
+            ->withErrors($validator)
+            ->with('error', 'Login failed! Please check your credentials.');
     }
 }

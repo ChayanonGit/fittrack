@@ -89,7 +89,7 @@ Route::middleware([
             });
         });
 
-    Route::controller(OrderController::class)
+  Route::controller(OrderController::class)
         ->prefix('admin/order')
         ->name('admin.order.')
         ->group(function () {
@@ -98,9 +98,7 @@ Route::middleware([
                 Route::get('/detail', 'orderDetail')->name('view-detail');
                 Route::get('/delete', 'delete')->name('delete');
             });
-        });
-
-    Route::controller(ProductController::class)
+        });    Route::controller(ProductController::class)
         ->prefix('/products')
         ->name('products.')
         ->group(function () {
