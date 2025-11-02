@@ -535,105 +535,280 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 	.category-actions .btn-edit,
 	.category-actions .btn-delete { padding: 8px 10px; font-size: 0.9rem; }
 }
-/* slider pic */
-.box {
-    max-width: 100%;
-    height: 100%;
-    box-shadow: none;
-    overflow: hidden;
+
+/* Boxed wrapper look for Shop area: apply only to direct children inside .container
+   so we don't affect other containers on the site */
+.container > .product-container,
+.container > .shop-grid {
+	background: #ffffff;
+	border-radius: 14px;
+	padding: 18px;
+	box-shadow: 0 18px 40px rgba(16,24,40,0.06);
+	margin-bottom: 22px;
+	/* keep layout behavior */
+	box-sizing: border-box;
 }
 
-
-
-.slider {
-    border-radius: 10px;
-    overflow: hidden;
+/* Adjust inner spacing so product-cards sit comfortably in the box */
+.container > .shop-grid {
+	/* preserve the grid behaviour but remove conflicting paddings */
+	padding-top: 18px;
+	padding-bottom: 18px;
 }
 
-.slides {
-    display: flex;
-    width: 300%;
-    height: auto; /* <- นี่เป็นเปอร์เซ็นต์ของ container สูงสุด */
-    transition: transform 1s ease;
+/* When product-container is boxed, reduce its internal vertical padding so it visually groups with the grid */
+.container > .product-container {
+	padding-top: 12px;
+	padding-bottom: 12px;
 }
 
-.slide {
-    width: 100%;
-    transition: 2s;
-    display: flex;
-
-    justify-content: center;
+/* Slight visual separation between the horizontal strip and the product grid (but still in the same box) */
+.container > .product-container + .shop-grid {
+	margin-top: 6px;
 }
 
-.slides input {
-    display: none;
+/* Small tweak: make product-cards' background slightly transparent so the boxed panel feels consistent */
+.container > .shop-grid .product-card,
+.container > .product-container .product-card {
+	background: linear-gradient(180deg, rgba(250,248,247,0.98), rgba(245,243,242,0.98));
 }
 
-.slide img {
-    width: 50%;
-    height: 100%;
-    max-height: 500px; /* สูงสุดที่ต้องการ */
-    object-fit: contain;
+/* Ensure boxed area remains responsive and does not overflow on small screens */
+@media (max-width: 880px) {
+	.container > .product-container,
+	.container > .shop-grid {
+		padding-left: 12px;
+		padding-right: 12px;
+		padding-top: 12px;
+		padding-bottom: 12px;
+		border-radius: 10px;
+	}
+	.container > .product-container { padding-bottom: 10px; }
 }
 
-.navigation-manual, .navigation-auto {
-    position: absolute;
-    margin-top: 27%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
+/* Shop panel: boxed area that contains both the category strip and product grid */
+.shop-panel {
+	background: #fff;
+	border-radius: 14px;
+	padding: 18px;
+	box-shadow: 0 18px 40px rgba(16,24,40,0.06);
+	margin-bottom: 28px;
 }
 
-
-.manual-btn {
-    border: 2px solid rgb(255, 255, 255);
-    padding: 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 1s;
-    margin-left: 5px;
-
+/* Horizontal category strip (independent, scrollable) */
+.shop-panel .shop-by-category {
+	display: flex;
+	gap: 16px;
+	align-items: flex-start;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	padding-bottom: 12px;
+	scroll-snap-type: x mandatory;
+	margin-bottom: 12px;
 }
 
-.manual-btn:not(:last-child) {
-    margin-right: 30px;
+/* subtle scrollbar for the strip */
+.shop-panel .shop-by-category::-webkit-scrollbar { height: 8px; }
+.shop-panel .shop-by-category::-webkit-scrollbar-thumb { background: rgba(16,24,40,0.06); border-radius: 6px; }
+
+/* category tile (small, compact) */
+.shop-panel .category-tile {
+	flex: 0 0 180px;
+	min-width: 160px;
+	border-radius: 12px;
+	overflow: hidden;
+	background: linear-gradient(180deg, #fff, #faf7f5);
+	box-shadow: 0 10px 28px rgba(16,24,40,0.04);
+	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
+	scroll-snap-align: start;
+	transition: transform .14s ease, box-shadow .14s ease;
+	padding: 8px;
 }
 
-.manual-btn:hover {
-    background: black;
+/* media inside tile */
+.shop-panel .category-tile .tile-media {
+	height: 110px;
+	border-radius: 10px;
+	overflow: hidden;
+	background: #f3f3f3;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.shop-panel .category-tile .tile-media img { width:100%; height:100%; object-fit:cover; display:block; }
+.shop-panel .category-tile .tile-media.placeholder { background:#ff4d4d; }
+
+/* caption row */
+.shop-panel .category-tile .tile-caption { display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px solid rgba(186,162,146,0.06); margin-top:8px; }
+.shop-panel .category-tile .tile-title { font-weight:700; color:#7a5a42; font-size:0.95rem; text-transform:none; }
+.shop-panel .category-tile .tile-arrow { color:#c9a996; font-weight:700; }
+
+/* hover */
+.shop-panel .category-tile:hover { transform: translateY(-6px); box-shadow: 0 18px 42px rgba(16,24,40,0.07); }
+
+/* Products grid inside the same panel */
+.shop-panel .products-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 18px;
+	padding-top: 8px;
+	margin-top: 6px;
 }
 
-#radio1:checked ~ .slides { transform: translateX(0%); }
-#radio2:checked ~ .slides { transform: translateX(-100%); }
-#radio3:checked ~ .slides { transform: translateX(-200%); }
-
-
-
-
-/*automatic slide */
-
-.navigation-auto div {
-    border: 2px solid black;
-    padding: 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 1s;
-    margin-left: 5px;
-
+/* product card: slightly tighter for panel */
+.shop-panel .product-card {
+	padding: 10px;
+	border-radius: 12px;
+	box-shadow: 0 10px 28px rgba(16,24,40,0.04);
+	background: linear-gradient(180deg, rgba(250,248,247,0.98), rgba(245,243,242,0.98));
 }
 
-.navigation-auto div:not(:last-child) {
-    margin-right: 30px;
+/* tighten meta and actions spacing */
+.shop-panel .product-meta { padding: 8px 4px 0 4px; gap: 8px; }
+.shop-panel .product-actions { gap: 8px; }
+
+/* responsive adjustments */
+@media (max-width: 880px) {
+	.shop-panel { padding: 12px; border-radius: 10px; }
+	.shop-panel .category-tile { flex: 0 0 140px; min-width: 120px; }
+	.shop-panel .category-tile .tile-media { height: 90px; }
+	.shop-panel .products-grid { gap: 12px; }
 }
 
-#radio1:checked~.navigation-auto .auto-btn1 {
-    background: black;
+/* === Fitness Class page === */
+.class-list-panel { max-width: 900px; margin: 0 auto; }
+
+.class-cards { display: flex; flex-direction: column; gap: 24px; padding-top: 12px; }
+
+/* class card: horizontal layout (image left, info right) */
+.class-card {
+	display: grid;
+	grid-template-columns: 320px 1fr;
+	gap: 20px;
+	background: #fff;
+	border-radius: 14px;
+	padding: 16px;
+	box-shadow: 0 18px 40px rgba(16,24,40,0.06);
+	transition: transform .14s ease, box-shadow .14s ease;
+	position: relative;
+}
+.class-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(16,24,40,0.08); }
+
+/* image area (left side) */
+.class-card .class-media {
+	width: 100%;
+	height: 220px;
+	border-radius: 12px;
+	overflow: hidden;
+	background: #f3f3f3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.class-card .class-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.class-card .class-media.placeholder { background: #ff4d4d; }
+
+/* info area (right side) */
+.class-card .class-info {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 8px 0;
 }
 
-#radio2:checked~.navigation-auto .auto-btn2 {
-    background: black;
+/* title */
+.class-card .class-name {
+	margin: 0;
+	font-size: 1.6rem;
+	color: #7a5a42;
+	font-weight: 700;
+	letter-spacing: 0.02em;
 }
 
-#radio3:checked~.navigation-auto .auto-btn3 {
-    background: black;
+/* description */
+.class-card .class-desc {
+	margin: 0;
+	color: #9b8f86;
+	font-size: 0.95rem;
+	line-height: 1.5;
+	flex-grow: 1;
+}
+
+/* meta info row */
+.class-card .class-meta {
+	display: flex;
+	gap: 18px;
+	padding: 10px 0;
+	border-top: 1px solid rgba(186,162,146,0.08);
+	margin-top: auto;
+}
+.class-card .meta-item { display: flex; gap: 6px; align-items: baseline; }
+.class-card .meta-label { color: #b2a9a2; font-size: 0.9rem; }
+.class-card .meta-value { color: #7a5a42; font-weight: 700; font-size: 1rem; }
+
+/* actions */
+.class-card .class-actions {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	padding-top: 8px;
+}
+
+/* Add class button (matches theme) */
+.btn-add-class {
+	background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+	color: #042027;
+	padding: 10px 16px;
+	border-radius: 12px;
+	border: none;
+	font-weight: 700;
+	cursor: pointer;
+	text-decoration: none;
+	display: inline-block;
+	transition: transform .12s ease, box-shadow .12s ease;
+	box-shadow: 0 8px 22px rgba(115,81,61,0.06);
+}
+.btn-add-class:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(16,24,40,0.08); }
+.btn-add-class:active { transform: translateY(0); }
+
+/* responsive: stack image above info on small screens */
+@media (max-width: 880px) {
+	.class-card {
+		grid-template-columns: 1fr;
+		gap: 12px;
+		padding: 12px;
+	}
+	.class-card .class-media { height: 180px; }
+	.class-card .class-name { font-size: 1.3rem; }
+	.class-card .class-meta { flex-direction: column; gap: 8px; }
+}
+
+/* class card: add relative positioning for absolute button */
+.class-card {
+	position: relative;
+}
+
+/* Add button positioned at top-right corner of card */
+.class-card .btn-add-top {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+	color: #042027;
+	padding: 8px 14px;
+	border-radius: 12px;
+	font-weight: 700;
+	font-size: 0.9rem;
+	text-decoration: none;
+	box-shadow: 0 8px 22px rgba(115,81,61,0.06);
+	transition: transform .12s ease, box-shadow .12s ease;
+	z-index: 10;
+}
+.class-card .btn-add-top:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 14px 34px rgba(16,24,40,0.08);
 }

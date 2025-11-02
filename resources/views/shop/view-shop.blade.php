@@ -4,49 +4,78 @@
 @endsection
 
 @section('content')
-    {{-- shop grid --}}
-	@foreach ($categories as $cate)
-		<div class="product-card">
-			<p>Category: {{ $cate->name ?? 'No Category' }}</p>
+{{-- shop panel: categories (horizontal) + products (grid) --}}
+<section class="shop-panel container">
 
-			@if ($cate->img)
-				<img src="{{ asset('storage/img_cat/' . $cate->img) }}" alt="{{ $cate->name }}" width="100">
-			@endif
+	{{-- Shop by category (horizontal strip) --}}
+    
+	<div class="shop-by-category-wrap container">
+        <div class="section-intro">
+			<div class="intro-left">
+				<h2>Shop By Category</h2>
+				
+			</div>
+			
 		</div>
-	@endforeach
-    <section class="shop-grid container">
-        @foreach ($shop as $shops)
-            <article class="product-card">
-                <div class="product-media">
-                    @if ($shops->img && file_exists(storage_path('app/public/img_product/' . $shops->img)))
-                        <img src="{{ asset('storage/img_product/' . $shops->img) }}" alt="{{ $shops->name }}">
-                    @else
-                        <div class="product-media placeholder">
-                            {{-- placeholder (red background) shown when no image --}}
-                        </div>
-                    @endif
-                </div>
 
+		<div class="shop-by-category">
+			@foreach ($categories as $cate)
+				<a href="{{ route('category.view-product', $cate->code) }}" class="category-tile">
+					<div class="tile-media">
+						@if ($cate->img && file_exists(storage_path('app/public/img_cat/' . $cate->img)))
+							<img src="{{ asset('storage/img_cat/' . $cate->img) }}" alt="{{ $cate->name }}">
+						@else
+							<div class="tile-media placeholder"></div>
+						@endif
+					</div>
 
-                <div>
-                    <form action="{{ route('cart.add', $shops->code) }}" method="POST">
-                        @csrf
-                        <button type="submit">Add to cart</button>
-                    </form>
+					<div class="tile-caption">
+						<div class="tile-title">{{ $cate->name ?? 'No Category' }}</div>
+						<div class="tile-arrow">→</div>
+					</div>
+				</a>
+			@endforeach
+		</div>
+	</div>
 
-                    <div class="product-meta">
-                        <div class="product-name">{{ $shops->name }}</div>
-                        <div class="product-price">฿{{ number_format($shops->price, 2) }}</div>
-                        <div class="product-price">คงเหลือ {{ $shops->stock }}</div>
-                    </div>
+	{{-- All products inside same visual panel --}}
+	<div class="shop-products">
+		<div class="section-intro">
+			<div class="intro-left">
+				<h2>All Products</h2>
+				<p class="muted">สินค้าทั้งหมด</p>
+			</div>
+			<div class="intro-right">
+				
+			</div>
+		</div>
 
-                    <div class="product-actions">
-                        <form action="{{ route('cart.add', $shops->code) }}" method="POST" class="product-add-form">
-                            @csrf
-                            <button type="submit" class="btn-add">Add to cart</button>
-                        </form>
-                    </div>
-            </article>
-        @endforeach
-    </section>
+		<div class="products-grid">
+			@foreach ($shop as $shops)
+				<article class="product-card">
+					<div class="product-media">
+						@if ($shops->img && file_exists(storage_path('app/public/img_product/' . $shops->img)))
+							<img src="{{ asset('storage/img_product/' . $shops->img) }}" alt="{{ $shops->name }}">
+						@else
+							<div class="product-media placeholder"></div>
+						@endif
+					</div>
+
+					<div class="product-meta">
+						<div class="product-name">{{ $shops->name }}</div>
+						<div class="product-price">฿{{ number_format($shops->price, 2) }}</div>
+					</div>
+
+					<div class="product-actions">
+						<form action="{{ route('cart.add', $shops->code) }}" method="POST" class="product-add-form">
+							@csrf
+							<button type="submit" class="btn-add">Add to cart</button>
+						</form>
+						
+					</div>
+				</article>
+			@endforeach
+		</div>
+	</div>
+</section>
 @endsection
