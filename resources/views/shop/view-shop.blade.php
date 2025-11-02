@@ -30,6 +30,7 @@
 
                 <div>
 
+
                     <div class="product-meta">
                         <div class="product-name">{{ $shops->name }}</div>
                         <div class="product-price">฿{{ number_format($shops->price, 2) }}</div>
@@ -40,8 +41,8 @@
                         <form action="{{ route('cart.add', $shops->code) }}" method="POST" class="product-add-form">
                             @csrf
                             <button type="submit" class="btn-add">Add to cart</button>
-                        </form>
-                    </div>
+                        </form>                   
+					 </div>
             </article>
         @endforeach
     </section>

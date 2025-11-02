@@ -40,7 +40,7 @@ class CartController extends Controller
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => 1,
-                'img' => $product->img 
+                'img' => $product->img
             ];
         }
 
@@ -115,8 +115,16 @@ class CartController extends Controller
                 'quantity'   => $item['quantity'],
                 'price'      => $item['price'],
                 'code'       => 'ORD' . strtoupper(Str::random(6)),
-            ]);
-
+            ])->save();
+            $product = \App\Models\Product::find($item['product_id']);
+            if ($product) {
+                $product->stock -= $item['quantity'];
+                // ป้องกัน stock ติดลบ
+                if ($product->stock < 0) {
+                    $product->stock = 0;
+                }
+                $product->save();
+            }
             $orderDetail->save();
         }
 

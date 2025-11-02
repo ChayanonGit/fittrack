@@ -3,10 +3,11 @@ const token = document.querySelector('meta[name="csrf-token"]').getAttribute('co
 document.querySelectorAll('.quantity').forEach(input => {
     input.addEventListener('change', function() {
         const tr = this.closest('tr');
-        const code = tr.dataset.code;
+        const code = tr.dataset.code;       // เช่น 'FITNESS01' หรือ 'CLASS01'
+        const type = tr.dataset.type;       // เพิ่ม data-type="product" หรือ "class"
         const quantity = this.value;
 
-        fetch(`/cart/update/${code}`, {
+        fetch(`/cart/update/${type}/${code}`, {   // ใส่ type ใน URL
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,3 +26,4 @@ document.querySelectorAll('.quantity').forEach(input => {
         .catch(err => console.error(err));
     });
 });
+

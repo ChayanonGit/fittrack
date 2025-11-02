@@ -36,7 +36,6 @@ class OrderDetailController extends SearchableController
             ->paginate(self::MAX_ITEMS);
 
 
-
         return view('orderlist.view-order', [
             'criteria' => $criteria,
             'orders' => $orders,

@@ -27,11 +27,13 @@
                     <td>{{ $detail->quantity }}</td>
                     <td>{{ $detail->product->price }}</td>
                     <td>{{ $detail->quantity * $detail->product->price }}</td>
-
-
                 </tr>
             @endforeach
-            <td><a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Cancel</a></td>
+            <td>
+                <a href="{{ route('admin.order.delete', ['orderCode' => $order->code]) }}">Cancel</a>
+                <a href="{{ route('admin.order.delete', ['orderCode' => $order->code]) }}">Edit</a>
+                <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Approve</a>
+            </td>
 
         </tbody>
     </table>
