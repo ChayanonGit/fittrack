@@ -1,0 +1,61 @@
+@extends('Category.main')
+
+@section('header')
+@endsection
+
+@section('content')
+    Product Category<br>
+    <a href="{{ route('category.create-form') }}">New Category</a>
+
+    <div class="cg-data-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        @if ($category->img)
+                            <img src="{{ asset('storage/img_cat/' . $category->img) }}" alt="{{ $category->name }}"
+                                width="100">
+                        @endif
+                    </td>
+                    <td>{{ $category->code }}</td>
+                    <td>{{ $category->name }}</td>
+
+                </tr>
+
+                @foreach ($product as $products)
+                    <tr>
+                        <td>
+                            @if ($products->img)
+                                <img src="{{ asset('storage/img_product/' . $products->img) }}" alt="{{ $products->name }}"
+                                    width="100">
+                            @endif
+                        </td>
+                        <td>{{ $products->code }}</td>
+                        <td>{{ $products->name }}</td>
+                        <td>{{ $products->stock ?? '-' }}</td>
+                        <td>
+
+                        <td><a href="{{ route('products.update-form', ['product' => $products->code,'from_category' => $category->code]) }}">Edit</a>
+
+                            </form>
+
+                            <a
+                                href="{{ route('products.delete', ['product' => $products->code, 'from_category' => $category->code]) }}">Delete</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+    </div>
+@endsection

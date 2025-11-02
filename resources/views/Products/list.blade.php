@@ -18,6 +18,8 @@
 
             </thead>
             <tbody>
+            </tbody>
+            <tbody>
                 <tr>
                     @foreach ($products as $products)
                         @if ($products->img)

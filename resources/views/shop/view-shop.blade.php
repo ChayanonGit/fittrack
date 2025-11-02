@@ -4,6 +4,17 @@
 @endsection
 
 @section('content')
+    @foreach ($categories as $cate)
+        <div class="product-card">
+            <p>Category: {{ $cate->name ?? 'No Category' }}</p>
+
+            @if ($cate->img)
+                <img src="{{ asset('storage/img_cat/' . $cate->img) }}" alt="{{ $cate->name }}"
+                    width="100">
+            @endif
+        </div>
+    @endforeach
+
     @foreach ($shop as $shops)
         <div>
             @if ($shops->img)

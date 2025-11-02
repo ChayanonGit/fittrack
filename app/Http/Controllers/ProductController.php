@@ -93,16 +93,15 @@ class ProductController extends SearchableController
     /**
      * Display the specified resource.
      */
-    function showUpdateForm(string $productCode): View
+    function showUpdateForm(request $request, string $productCode): View
     {
-
+        $fromCategory = $request->query('from_category');
         $product = Product::where('code', $productCode)->firstOrFail();
         $category = Category::all();
-
         return view('products.update-form', [
             'product' => $product,
             'category' => $category,
-
+            'fromCategory' => $fromCategory,
         ]);
     }
 
@@ -124,13 +123,17 @@ class ProductController extends SearchableController
         $category = $categoryController->find($data['category']);
 
 
-
+        $fromCategory = $data['from_category'] ?? null;
 
         try {
             $product->fill($data);
             $product->category()->associate($category);
             $product->save();
-
+            if ($fromCategory) {
+                return redirect()
+                    ->route('category.view-product', ['category' => $fromCategory])
+                    ->with('status', "Product {$product->code} was updated.");
+            }
             return redirect()
                 ->route('products.list', [
                     'product' => $product->code,
@@ -147,12 +150,17 @@ class ProductController extends SearchableController
     /**
      * Remove the specified resource from storage.
      */
-    function delete(string $productCode): RedirectResponse
+    function delete(string $productCode, Request $request): RedirectResponse
     {
         $product = $this->find($productCode);
 
         try {
             $product->delete();
+            if ($request->has('from_category')) {
+                return redirect()
+                    ->route('category.view-product', ['category' => $request->input('from_category')])
+                    ->with('status', "Product {$product->code} was deleted.");
+            }
 
             return redirect(
                 session()->get('bookmarks.products.list', route('products.list'))

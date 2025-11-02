@@ -35,6 +35,7 @@
                         <td>
                             <a href="{{ route('category.update-form', ['category' => $categorys->code]) }}">Edit</a>
                             <a href="{{ route('category.delete', ['category' => $categorys->code]) }}">Delete</a>
+                            <a href="{{ route('category.view-product', ['category' => $categorys->code]) }}">View Product</a>
                         </td>
                     </tr>
                 @endforeach

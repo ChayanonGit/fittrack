@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\FitnessCourse;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -27,28 +28,28 @@ class HomeController extends SearchableController
     }
 
 
+
     public function viewshop(Request $request)
     {
-        // ดึง query string เพื่อ filter
-        $criteria = $request->query(); // ['name' => 'Yoga']
+        $criteria = $request->query();
 
-        // Query Builder ของ Category
+        // ดึง products ตาม filter
         $query = Product::query();
-
-        // ตัวอย่าง filter ตามชื่อ
         if (!empty($criteria['name'])) {
             $query->where('name', 'like', '%' . $criteria['name'] . '%');
         }
-
-        // Paginate 5 ต่อหน้า
         $shop = $query->paginate(self::MAX_ITEMS);
 
-        // ส่งข้อมูลไป Blade
+        // ดึง category ทั้งหมด
+        $categories = Category::all();
+
         return view('shop.view-shop', [
             'criteria' => $criteria,
             'shop' => $shop,
+            'categories' => $categories, // ส่งไป Blade ด้วย
         ]);
     }
+
 
     public function viewclass(ServerRequestInterface $request): View
     {
