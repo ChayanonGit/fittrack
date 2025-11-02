@@ -19,23 +19,24 @@
                 <input type="text" id="app-inp-name" name="name" value="{{ $product->name }}" required />
             </div>
 
-            <div class="form-group">
-                <label for="app-inp-description">Category</label>
-                <select name="category" id="app-inp-description">
-                    <option value="" selected>---Please Select---</option>
-                    @foreach ($category as $cate)
-                        <option value="{{ $cate->code }}" 
-                            @selected($cate->code === old('category', $product->category->code))>
-                            [{{ $cate->code }}] {{ $cate->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            <label for="app-inp-description">Category</label>
+            <select name="category" id="">
+                <option value="" {{ old('category', optional($product->category)->code) ? '' : 'selected' }}>---Please
+                    Select---</option>
+                @foreach ($category as $cate)
+                    <option value="{{ $cate->code }}"
+                        {{ $cate->code === old('category', optional($product->category)->code) ? 'selected' : '' }}>
+                        [{{ $cate->code }}] {{ $cate->name }}
+                    </option>
+                @endforeach
+            </select>
 
-            <div class="form-group">
-                <label for="app-inp-price">Price</label>
-                <input type="number" id="app-inp-price" name="price" step="any" value="{{ $product->price }}" required />
-            </div>
+            <label for="app-inp-price">Price</label>
+            <input type="number" id="app-inp-price" name="price" step="any" value="{{ $product->price }}" required />
+
+            <label for="app-inp-price">Qty</label>
+            <input type="number" id="app-inp-price" name="stock" step="any" value="{{ $product->stock }}"
+                required />
 
             <div class="form-group">
                 <label for="app-inp-stock">Qty</label>

@@ -565,6 +565,24 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 /* Slight visual separation between the horizontal strip and the product grid (but still in the same box) */
 .container > .product-container + .shop-grid {
 	margin-top: 6px;
+/* slider pic */
+slider {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    width: 312%;
+    transition: transform 1s ease;
+}
+
+.slide {
+    width: 33%;
+    transition: 2s;
+    display: flex;
+    height: auto; 
+    justify-content: center;
 }
 
 /* Small tweak: make product-cards' background slightly transparent so the boxed panel feels consistent */
@@ -584,6 +602,10 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 		border-radius: 10px;
 	}
 	.container > .product-container { padding-bottom: 10px; }
+.slide img {
+    width: 100%; 
+    height: 500px;
+    object-fit: contain; 
 }
 
 /* Shop panel: boxed area that contains both the category strip and product grid */
@@ -665,6 +687,25 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 	border-radius: 12px;
 	box-shadow: 0 10px 28px rgba(16,24,40,0.04);
 	background: linear-gradient(180deg, rgba(250,248,247,0.98), rgba(245,243,242,0.98));
+#radio3:checked~.first {
+    margin-left: 0;
+}
+
+#radio2:checked~.first {
+    margin-left: -33%;
+}
+
+#radio1:checked~.first {
+    margin-left: -67%;
+}
+.navigation-auto div {
+    border: 2px solid black;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 1s;
+    margin-left: 5px;
+
 }
 
 /* tighten meta and actions spacing */
@@ -811,4 +852,7 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 .class-card .btn-add-top:hover {
 	transform: translateY(-3px);
 	box-shadow: 0 14px 34px rgba(16,24,40,0.08);
+}
+#radio3:checked~.navigation-auto .auto-btn3 {
+    background: black;
 }

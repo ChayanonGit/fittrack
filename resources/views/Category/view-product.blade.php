@@ -6,10 +6,8 @@
 @endsection
 
 @section('content')
-<div class="category-container">
-   <h2>Product Category<br>
-       <a href="{{ route('products.create') }}" class="new-category">New Product</a>
-   </h2>
+    Product Category<br>
+    <a href="{{ route('products.create') }}">New Product</a>
 
     <div class="table-container">
         <table>
@@ -43,9 +41,18 @@
                         <td>{{ $products->code }}</td>
                         <td>{{ $products->name }}</td>
                         <td>{{ $products->stock ?? '-' }}</td>
-                        <td class="action-links">
-                            <a href="{{ route('products.update-form', ['product' => $products->code, 'from_category' => $category->code]) }}">Edit</a>
-                            <a href="{{ route('products.delete', ['product' => $products->code, 'from_category' => $category->code]) }}">Delete</a>
+                        <td>
+
+                        <td><a
+                                href="{{ route('products.update-form', ['product' => $products->code, 'from_category' => $category->code]) }}">Edit</a>
+
+                            </form>
+                            <a href="{{ route('products.delete', ['product' => $products->code, 'from_category' => $category->code]) }}" class="btn-delete"
+                                data-name="{{ $products->name }}">
+                                Delete
+                            </a>
+           
+                               
                         </td>
                     </tr>
                 @endforeach

@@ -62,11 +62,20 @@ class CategoryController extends SearchableController
             $data['img'] = $filename;
         }
 
-        $category = Category::create($data);
+        try {
+            if (isset($data['code']) && Category::where('code', $data['code'])->exists()) {
+                return redirect()->back()->withInput()->with('error', "Code {$data['code']} ซ้ำ! กรุณาใช้ code ใหม่");
+            }
+            $category = Category::create($data);
 
-        return redirect(
-            session()->get('bookmarks.categories.create-form', route('category.list'))
-        )->with('status', "Category {$category->code} was created.");
+            // Success SweetAlert
+            return redirect(
+                session()->get('bookmarks.categories.create-form', route('category.list'))
+            )->with('success', "Category {$category->code} ถูกสร้างเรียบร้อยแล้ว!");
+        } catch (\Illuminate\Database\QueryException $excp) {
+            // Error SweetAlert
+            return redirect()->back()->withInput()->with('error', $excp->errorInfo[2]);
+        }
     }
 
 
@@ -88,54 +97,63 @@ class CategoryController extends SearchableController
     }
 
 
-    function update(ServerRequestInterface $request, string $CateCode,): RedirectResponse
+    public function update(ServerRequestInterface $request, string $CateCode): RedirectResponse
     {
         $category = $this->find($CateCode);
-
+        $data = $request->getParsedBody();
 
         try {
-            $category->fill($request->getParsedBody());
-            $category->save();
+            // ตรวจสอบ duplicate สำหรับ record อื่น
+            if (
+                isset($data['code']) &&
+                Category::where('code', $data['code'])
+                ->where('id', '!=', $category->id)
+                ->exists()
+            ) {
+                return redirect()->back()->withInput()->with([
+                    'error' => "Code {$data['code']} ซ้ำ! กรุณาใช้ code ใหม่"
+                ]);
+            }
 
+            // เติมค่าจาก form
+            $category->fill($data);
+
+            // อัปโหลดไฟล์ถ้ามี
             $uploadedFiles = $request->getUploadedFiles();
-
             if (isset($uploadedFiles['img'])) {
                 $file = $uploadedFiles['img'];
-
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $filename = $file->getClientFilename();
-
-                    // ย้ายไฟล์ไป storage
                     $file->moveTo(storage_path('app/public/img_cat/' . $filename));
-
-                    // อัปเดตชื่อไฟล์ใน DB
                     $category->img = $filename;
                 }
             }
+
+            // บันทึกข้อมูล
             $category->save();
-            return redirect()
-                ->route('category.list')
-                ->with('status', "Category {$category->code} was updated.");
+
+            return redirect()->route('category.list')
+                ->with('success', " {$category->code} อัพเดทสำเร็จ!");
         } catch (QueryException $excp) {
-            return redirect()->back()->withInput()->withErrors([
-                'alert' => $excp->errorInfo[2],
-            ]);
+            // ส่ง session สำหรับ SweetAlert error
+            return redirect()->back()->withInput()->with('error', $excp->errorInfo[2]);
         }
     }
+
 
     function delete(string $CateCode): RedirectResponse
     {
         $category = $this->find($CateCode);
 
         $category->delete();
+        $successMessage = "{$category->code} Delete Success!";
 
         try {
             $category->delete();
-
             return redirect(
                 session()->get('bookmarks.category.list', route('category.list'))
             )
-                ->with('status', "Category {$category->code} was deleted.");
+                ->with('success', $successMessage);
         } catch (QueryException $excp) {
             // We don't want withInput() here.
             return redirect()->back()->withErrors([
