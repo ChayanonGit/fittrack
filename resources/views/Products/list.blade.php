@@ -34,10 +34,8 @@
 
 				<div class="category-actions">
 					<a href="{{ route('products.list', $product->code) }}" class="btn-view">View</a>
-            </thead>
-            <tbody>
-            </tbody>
-            <tbody>
+					<table>
+            
                 <tr>
                     @foreach ($products as $products)
                         @if ($products->img)
@@ -47,12 +45,14 @@
                         <td>{{ $products->name }}</td>
                         <td>{{ $products->price }}</td>
                         <td>{{ $products->stock }}</td>
-                        <td><a href="{{ route('products.update-form', ['product' => $products->code]) }}">Edit</a>
+                        <td>
 
-					<a href="{{ route('products.update-form', ['product' => $product->code]) }}" class="btn-edit">Edit</a>
+					<a href="{{ route('products.update-form', ['product' => $product->code]) }}" class="btn-edit">Edit</a></td>
 
 					
-                    <a href="{{ route('products.delete', ['product'=>$product->code]) }}" class="btn-delete">Delete</a>
+                   <td> <a href="{{ route('products.delete', ['product'=>$product->code]) }}" class="btn-delete">Delete</a></td>
+					@endforeach
+</table>
 				</div>
 			</article>
 		@endforeach
