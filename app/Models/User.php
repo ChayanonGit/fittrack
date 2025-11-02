@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        
     ];
 
     /**
@@ -49,4 +50,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    function isAdministrator(): bool
+    {
+        return $this->role === 'ADMIN';
+    }
+
 }

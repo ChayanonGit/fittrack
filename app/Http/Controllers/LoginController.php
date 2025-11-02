@@ -53,9 +53,12 @@ class LoginController extends Controller
             session()->regenerate();
             return redirect()->intended(route('products.list'));
         }
+
         // if cannot authenticate redirect back to loginForm with error message.
         return redirect()->back()->withErrors([
+
             'credentials' => 'The provided credentials do not match our records.',
+
         ]);
         $validator = Validator::make(
 
