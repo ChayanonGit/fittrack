@@ -39,7 +39,7 @@ abstract class SearchableController extends Controller
 
     function filter(Builder|Relation $query, array $criteria): Builder|Relation
     {
-        return $this->filterByTerm($query, $criteria['term']);
+        return $this->filterByTerm($query, $criteria['term'] ?? null);
     }
 
     function search(array $criteria): Builder

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Database\QueryException;
+use App\Models\Product;
+use App\Models\FitnessCourse; // ✅ เพิ่มบรรทัดนี้
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
@@ -20,29 +22,37 @@ class CategoryController extends SearchableController
         return Category::orderBy('code');
     }
 
-    public function List(Request $request): View
-    {
-        // ดึง query string เพื่อ filter
-        $criteria = $request->query(); // ['name' => 'Yoga']
-
-        // Query Builder ของ Category
-        $query = Category::query();
-
-        // ตัวอย่าง filter ตามชื่อ
-        if (!empty($criteria['name'])) {
-            $query->where('name', 'like', '%' . $criteria['name'] . '%');
-        }
-
-        // Paginate 5 ต่อหน้า
-        $category = $query->paginate(8);
-
-        // ส่งข้อมูลไป Blade
-        return view('category.list', [
-            'criteria' => $criteria,
-            'category' => $category,
-        ]);
+    public function list(Request $request): View
+{
+    // 1️⃣ ถ้ามี query ใหม่ (search)
+    if ($request->has('term')) {
+        session(['category_search_term' => $request->input('term')]);
     }
 
+    // 2️⃣ เตรียม criteria จาก input หรือ session
+    $term = $request->input('term') ?? session('category_search_term', '');
+    $criteria = $this->prepareCriteria(['term' => $term]);
+
+    // 3️⃣ ใช้ search() จาก SearchableController
+    $query = $this->search($criteria);
+
+    // 4️⃣ Paginate + append query string
+    $categories = $query->paginate(self::MAX_ITEMS)->appends(['term' => $term]);
+
+    // 5️⃣ ส่งไป Blade
+    return view('category.list', [
+        'criteria' => $criteria,
+        'category' => $categories,
+    ]);
+}
+
+public function resetSearch(): RedirectResponse
+{
+    session()->forget('category_search_term');
+    return redirect()->route('category.list');
+}
+
+// ฟังก์ชัน reset search
 
     public function createform()
     {
