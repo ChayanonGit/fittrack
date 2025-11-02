@@ -1233,7 +1233,7 @@ footer {
     box-shadow: 0 5px 10px rgba(184, 139, 90, 0.4);
 }
 /* slider pic */
-slider {
+.slider {
     border-radius: 10px;
     overflow: hidden;
 }
