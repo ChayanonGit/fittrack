@@ -52,12 +52,14 @@
             <h2>Movement Made Stylish.</h2>
             <p>Shop our best sellers.</p>
         </div>
-        @if(Auth::check())
+        
+
+                @if(Auth::check())
 				@if(Auth::user()->role === 'ADMIN')
 				{{-- left links --}}
 					<div class="intro-right">
                         <a class="btn-cta" href="{{ route('products.list') }}">SHOP ALL PRODUCTS</a>
-                    </div>					
+                    </div>
 				@else
 				{{-- user menu --}}
 					<div class="intro-right">
@@ -110,12 +112,14 @@
             <h2>Our Best Fitness Class</h2>
             <p>Explore popular classes</p>
         </div>
+        
+
         @if(Auth::check())
 				@if(Auth::user()->role === 'ADMIN')
 				{{-- left links --}}
 					<div class="intro-right">
                         <a class="btn-cta" href="{{ route('fitnessclass.list') }}">ALL FITNESS CLASS</a>
-                    </div>					
+                    </div>
 				@else
 				{{-- user menu --}}
 					<div class="intro-right">
