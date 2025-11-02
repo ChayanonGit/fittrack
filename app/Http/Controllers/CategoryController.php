@@ -143,4 +143,42 @@ class CategoryController extends SearchableController
             ]);
         }
     }
+    function product_delete(string $ProductCode): RedirectResponse
+    {
+        $product = $this->find($ProductCode);
+        dd($product);
+        $product->delete();
+
+        try {
+            $product->delete();
+
+            return redirect(
+                session()->get('bookmarks.category.list', route('category.list'))
+            )
+                ->with('status', "Category {$product->code} was deleted.");
+        } catch (QueryException $excp) {
+            // We don't want withInput() here.
+            return redirect()->back()->withErrors([
+                'alert' => $excp->errorInfo[2],
+            ]);
+        }
+    }
+    function viewProducts(
+        ServerRequestInterface $request,
+        ProductController $ProductController,
+        String $productCode,
+    ): view {
+        $category = $this->find($productCode);
+        $criteria = $ProductController->prepareCriteria($request->getQueryParams());
+        $query = $ProductController->filter(
+            $category->products(),
+            $criteria,
+        )
+            ->withCount('category');
+        return view('category.view-product', [
+            'category' => $category,
+            'criteria' => $criteria,
+            'product' => $query->paginate($ProductController::MAX_ITEMS),
+        ]);
+    }
 }

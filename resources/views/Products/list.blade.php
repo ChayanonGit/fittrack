@@ -34,6 +34,20 @@
 
 				<div class="category-actions">
 					<a href="{{ route('products.list', $product->code) }}" class="btn-view">View</a>
+            </thead>
+            <tbody>
+            </tbody>
+            <tbody>
+                <tr>
+                    @foreach ($products as $products)
+                        @if ($products->img)
+                            <img src="{{ asset('storage/img_product/' . $products->img) }}" alt="{{ $products->name }}"
+                                width="100">
+                        @endif
+                        <td>{{ $products->name }}</td>
+                        <td>{{ $products->price }}</td>
+                        <td>{{ $products->stock }}</td>
+                        <td><a href="{{ route('products.update-form', ['product' => $products->code]) }}">Edit</a>
 
 					<a href="{{ route('products.update-form', ['product' => $product->code]) }}" class="btn-edit">Edit</a>
 

@@ -5,7 +5,47 @@
 
 @section('content')
 
+        <div class="box">
+            <div class="slider">
+                <div class="slides">
+                    <input type="radio" name="radio-btn" id="radio1">
+                    <input type="radio" name="radio-btn" id="radio2">
+                    <input type="radio" name="radio-btn" id="radio3">
 
+
+                    <div class="slide first">
+                       <img src="{{ asset('storage/img_slide/s3.png') }}" alt="s3.png">
+
+
+                    </div>
+                    <div class="slide">
+                        <img src="{{ asset('storage/img_slide/s2.jpg') }}"
+                            alt="s2.png" >
+
+                    </div>
+                    <div class="slide">
+                        <img src="{{ asset('storage/img_slide/s3.jpg') }}"
+                            alt="s1.png" >
+
+                    </div>
+
+
+
+                    <div class="navigation-auto">
+                        <div class="auto-btn1"></div>
+                        <div class="auto-btn2"></div>
+                        <div class="auto-btn3"></div>
+                    </div>
+
+
+                    <div class="navigation-manual">
+                        <label for="radio1" class="manual-btn"></label>
+                        <label for="radio2" class="manual-btn"></label>
+                        <label for="radio3" class="manual-btn"></label>
+                    </div>
+
+                </div>
+            </div>
     <section class="section-intro container">
         <div class="intro-left">
             <h2>Movement Made Stylish.</h2>
