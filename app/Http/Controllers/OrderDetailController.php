@@ -23,7 +23,7 @@ class OrderDetailController extends SearchableController
         $query = OrderDetail::orderBy('code');
 
         if ($userId) {
-            $query->where('user_id', $userId); // สมมติว่ามี user_id ใน order_detail
+            $query->where('user_id', $userId); 
         }
 
         return $query;
@@ -34,12 +34,12 @@ class OrderDetailController extends SearchableController
         Gate::authorize('viewAny', OrderDetail::class);
 
         $criteria = $this->prepareCriteria($request->getQueryParams());
-        $userId = auth()->id(); // ใช้ user ที่ login
+        $userId = auth()->id();
 
         $orders = Order::where('user_id', $userId)
             ->with([
                 'orderDetails.product',
-                'orderDetails.FitnessCourse' // เพิ่ม relation สำหรับคลาส
+                'orderDetails.FitnessCourse' // เพิ่ม relation เอาไว้ดึงข้อมูล
             ])
             ->paginate(self::MAX_ITEMS);
 
@@ -71,16 +71,15 @@ class OrderDetailController extends SearchableController
      */
     public function delete(ServerRequestInterface $request, $OrderCode): RedirectResponse
     {
-        // หา order ก่อน
+        
         $order = Order::where('code', $OrderCode)->firstOrFail();
 
-        // ตรวจสอบสิทธิ์ก่อนลบ
+       
 
         try {
-            $orderCode = $order->code; // เก็บไว้ก่อนลบ
+            $orderCode = $order->code; 
             $order->delete();
 
-            // redirect หลังลบเสร็จ
             return redirect(
                 session()->get('bookmarks.orders.view', route('order.view-order'))
             )->with('success', "Order {$orderCode} was deleted.");
@@ -92,24 +91,22 @@ class OrderDetailController extends SearchableController
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function approve($orderCode)
     {
         $order = Order::where('code', $orderCode)->firstOrFail();
 
-        // เช็คว่า order ยังไม่ถูก approve
+        
         if ($order->status !== 'paid') {
-            // เปลี่ยน status เป็น paid
+            
             $order->status = 'paid';
             $order->save();
 
-            // ลบ stock ของแต่ละ product
+            //ลูปเอาไว้ลด stock
             foreach ($order->orderDetails as $detail) {
                 $product = $detail->product;
                 if ($product) {
-                    // ลด stock เท่ากับ quantity
+                    
                     $product->stock = max(0, $product->stock - $detail->quantity);
                     $product->save();
                 }

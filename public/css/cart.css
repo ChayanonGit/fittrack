@@ -13,7 +13,7 @@ body {
 
 .cart-header-top {
     width: 100%;
-    text-align: left; /* ✅ หรือ center ถ้าอยากให้อยู่ตรงกลาง */
+    text-align: left; 
     padding-left: 10px;
 }
 .cart-header-top h2 {

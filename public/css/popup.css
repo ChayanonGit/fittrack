@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3); /* ✅ เพิ่มโปร่งใสพื้นหลัง */
+  background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -23,7 +23,7 @@
   height: 600px;
   overflow: hidden;
   position: relative;
-  background-color: #fff; /* ✅ ใส่สีขาวเฉพาะกล่อง */
+  background-color: #fff;
   animation: fadeInUp 0.3s ease forwards;
 }
 
@@ -47,17 +47,17 @@
   text-align: center;
 }
 
-/* ฝั่งซ้าย (Login) */
+/* ฝั่งซ้าย  */
 .modal-content.left {
   background-color: #ffffff;
 }
 
-/* ฝั่งขวา (Sign Up) */
+/* ฝั่งขวา  */
 .modal-content.right {
   background-color: #ffffff;
 }
 
-/* input & button */
+
 input {
   width: 100%;
   padding: 10px;

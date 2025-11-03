@@ -1,4 +1,4 @@
-// รอให้หน้าเว็บโหลด HTML เสร็จก่อนค่อยรันโค้ด
+// รันโค้ดหลังจากโหลดหน้าเสด
 document.addEventListener('DOMContentLoaded', function () {
 
   // ดึง element ของ modal login
@@ -7,10 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // ดึงปุ่ม login ที่จะกดเพื่อเปิด modal
   const btn = document.getElementById('loginBtn');
 
-  // ดึงปุ่ม close ใน modal
   const closeBtn = modal.querySelector('.close');
 
-  // พอกดปุ่ม login ให้เปิด modal
+  // ถ้ากดปุ่ม login ให้เปิด modal
   btn.addEventListener('click', () => {
     modal.classList.add('show'); // เพิ่ม class 'show' ให้ modal มองเห็น
   });
@@ -28,24 +27,21 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// ----------------------------------------------
-// สไลด์โชว์อัตโนมัติ (Radio Button Slider)
-
-// เริ่มนับจาก 1
+//ให้เริ่มจาก 1
 var count = 1;
 
-// ตั้ง interval ทุก 2.5 วินาที
+// ตั้ง การห่างกัน ทุก 2.5 วินาที
 setInterval(function() {
 
-    // ให้ radio button ที่ตรงกับ count ถูกเลือก
+    // ให้ radio button ที่ตรงกับ count ที่เลือก
     document.getElementById('radio' + count).checked = true;
 
     // เพิ่ม count ไป radio ตัวถัดไป
     count++;
 
-    // ถ้าเกิน 3 ตัว ให้เริ่มใหม่ที่ 1
+
     if (count > 3) {
         count = 1;
     }
 
-}, 2500); // 2500ms = 2.5 วินาที
+}, 2500); //  2.5 วินาที

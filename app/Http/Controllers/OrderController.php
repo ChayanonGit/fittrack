@@ -23,7 +23,7 @@ class OrderController extends SearchableController
         $query = OrderDetail::orderBy('code');
 
         if ($userId) {
-            $query->where('user_id', $userId); // สมมติว่ามี user_id ใน order_detail
+            $query->where('user_id', $userId);
         }
 
         return $query;

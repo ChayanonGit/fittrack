@@ -1,9 +1,9 @@
 /* ตัว container หลัก */
 .category-header {
     display: flex;
-    justify-content: space-between; /* ดันซ้ายขวา */
-    align-items: center; /* จัดแนวกลางในแนวตั้ง */
-    margin-bottom: 1rem; /* ระยะห่างด้านล่าง */
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 /* ปรับขนาดปุ่ม New Category */
@@ -24,7 +24,7 @@
 /* Search form */
 .app-cmp-search-form {
     display: flex;
-    gap: 0.5rem; /* ระยะห่างระหว่าง input กับปุ่ม */
+    gap: 0.5rem;
     align-items: center;
 }
 

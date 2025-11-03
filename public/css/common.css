@@ -1316,9 +1316,9 @@ footer {
 }
 
 :root {
-  --primary-color: #c8a47e;   /* น้ำตาลทอง */
-  --secondary-color: #f6efe6; /* ครีมอ่อน */
-  --text-color: #6b513b;      /* น้ำตาลเข้ม */
+  --primary-color: #c8a47e;   
+  --secondary-color: #f6efe6; 
+  --text-color: #6b513b;      
   --bg-color: #fffdfb;
 }
 

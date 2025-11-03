@@ -104,14 +104,19 @@ class ProductController extends SearchableController
 
                 $destination = storage_path('app/public/img_product/');
                 if (!file_exists($destination)) {
+                    // ตรวจสอบว่ามีfolder  ทรี่จะเก็บมั้ย่
+                    // file_exists() จะคืนค่า true ถ้าโฟลเดอร์หรือไฟล์มีอยู่
                     mkdir($destination, 0755, true);
+                    // สร้างโฟลเดอร์ใหม่ตาม path ที่กำหนด $destination
+                    // 0755 = สิทธิ์การเข้าถึงโฟลเดอร์
+
                 }
 
                 $file->moveTo($destination . $filename);
                 $data['img'] = $filename;
             }
 
-            // สร้าง Product แล้ว associate กับ Category
+
             $product = new Product();
             $product->fill($data);
             $product->category()->associate($category); // set category_id
@@ -120,7 +125,7 @@ class ProductController extends SearchableController
             return redirect(session()->get('bookmarks.products.create-form', route('products.list')))
                 ->with('success', "Product {$product->code} ถูกสร้างเรียบร้อยแล้ว!");
         } catch (QueryException $excp) {
-            // ส่ง session สำหรับ SweetAlert error
+
             return redirect()->back()->withInput()->with('error', $excp->errorInfo[2]);
         }
     }
@@ -166,6 +171,11 @@ class ProductController extends SearchableController
         $fromCategory = $data['from_category'] ?? null;
 
         try {
+            
+            // เช็คว่าส่งค่า 'code' มามั้ย
+            //   เช็ค่ามีสินค้ารหัสเดียวกันในฐานข้อมูลมั้ย
+            //    - where !=หา ยกเว้นตัวสินค้าที่กำลังแก้ไขอยู่
+            //    - exists()  คืนค่า true ถ้ามีสินค้ารหัสเดียวกันที่ไม่ใช่ตัวนี้อยู่แล้ว
             if (isset($data['code']) && Product::where('code', $data['code'])->where('id', '!=', $product->id)->exists()) {
                 return redirect()->back()->withInput()->with('error', "Code {$data['code']} มีอยู่แล้ว!");
             }

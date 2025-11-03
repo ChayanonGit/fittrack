@@ -16,7 +16,7 @@ class ProductPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->isAdministrator(); // เฉพาะแอดมิน
+        return $user->isAdministrator();
     }
     function create(User $user): bool
     {

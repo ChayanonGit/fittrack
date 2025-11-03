@@ -13,9 +13,9 @@
                     <h2>ตะกร้าสินค้า</h2>
                 </div>
 
-                <!-- Left Side: Products -->
+
                 <div class="cart-left">
-                    <!-- Header -->
+
                     <div class="cart-header">
                         <div class="header-img">สินค้า</div>
                         <div class="header-name">ชื่อสินค้า</div>
@@ -44,7 +44,7 @@
                     @endforeach
                 </div>
 
-                <!-- Right Side: Total & Checkout -->
+    
                 <div class="cart-right">
                     <h2>สรุปราคารวม</h2>
                     <p>รวมทั้งหมด: <span id="grand-total">{{ number_format($grandTotal) }}</span> ฿</p>

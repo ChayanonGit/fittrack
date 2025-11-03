@@ -41,19 +41,18 @@ class FitnessCourseController extends SearchableController
     {
         Gate::authorize('viewAny', FitnessCourse::class);
 
-        // ดึง query string เพื่อ filter
+
         if ($request->has('term')) {
             session(['fitnessclass_search_term' => $request->input('term')]);
         }
 
-        // 2️⃣ เตรียม criteria จาก input หรือ session
         $term = $request->input('term') ?? session('fitnessclass_search_term', '');
         $criteria = $this->prepareCriteria(['term' => $term]);
 
-        // 3️⃣ ใช้ search() จาก SearchableController
+
         $query = $this->search($criteria);
 
-        // 4️⃣ Paginate + append query string
+
         $class = $query->paginate(self::MAX_ITEMS)->appends(['term' => $term]);
 
         // ส่งข้อมูลไป Blade
@@ -128,11 +127,16 @@ class FitnessCourseController extends SearchableController
             $class->fill($request->getParsedBody());
             $class->save();
 
+            //ดึงไฟล์
             $uploadedFiles = $request->getUploadedFiles();
 
             if (isset($uploadedFiles['img'])) {
                 $file = $uploadedFiles['img'];
 
+
+                // ตรวจสอบว่าไฟล์อัปโหลดสำเร็จหรือไม่
+                // getError() จะส่ง โค้ดขerrorไฟล์
+                // UPLOAD_ERR_OK (ค่าคงที่ = 0)=ไม่มีข้อผิดพลาด
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $filename = $file->getClientFilename();
 

@@ -1,39 +1,38 @@
-// ดึงค่า CSRF token จาก meta tag ในหน้า HTML
-// ใช้ป้องกันการโจมตี CSRF เวลาส่ง POST request
+
+// gen csrf เพราะมีการส่ง post
 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-// เลือกทุก input ที่มี class .quantity (ช่องกรอกจำนวนสินค้า)
+// เลือกทุก input class .quantity
 document.querySelectorAll('.quantity').forEach(input => {
 
-    // ถ้ามีการเปลี่ยนแปลงค่าในช่องกรอกจำนวน
+    // เชค
     input.addEventListener('change', function() {
 
-        // หา element พ่อแม่ที่ใกล้ที่สุดที่มี class .cart-item
-        // (แทนจาก tr เป็น div .cart-item)
+        
+    //หา element 
         const itemDiv = this.closest('.cart-item');
 
-        // ถ้าไม่เจอ .cart-item ให้หยุดทำงานตรงนี้เลย ป้องกัน error
+
         if (!itemDiv) return;
 
-        // ดึงข้อมูล code และ type ของสินค้าเก็บไว้
-        // ข้อมูลพวกนี้มากับ attribute data-code และ data-type ของ .cart-item
+   //เอาข้อมูลทีส่งมามาเก็บ
         const code = itemDiv.dataset.code;
         const type = itemDiv.dataset.type;
 
-        // ดึงจำนวนใหม่จาก input
+        // เก็บค่าใหม่
         const quantity = this.value;
 
-        // ส่ง request ไปอัพเดตจำนวนใน cart ผ่าน API
+        // ส่ง ค่าใหม่ ไปอัพเดตใน cart ผ่าน API ส่งเป็น JSON มีcsrf
         fetch(`/cart/update/${type}/${code}`, {
-            method: 'POST', // ใช้ POST เพราะเราแก้ไขข้อมูล
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // ส่งเป็น JSON
-                'X-CSRF-TOKEN': token // ใส่ CSRF token เพื่อความปลอดภัย
+                'Content-Type': 'application/json', 
+                'X-CSRF-TOKEN': token 
             },
             body: JSON.stringify({ quantity }) // ส่งข้อมูลจำนวนใหม่
         })
         .then(res => {
-            // ถ้า server ตอบไม่โอเค ให้โยน error
+            // แจ้ง error
             if (!res.ok) throw new Error('HTTP error ' + res.status);
             return res.json(); // แปลง response เป็น JSON
         })
@@ -42,7 +41,7 @@ document.querySelectorAll('.quantity').forEach(input => {
             // เปลี่ยนจาก .total → .item-total ตามโครงสร้างใหม่
             itemDiv.querySelector('.item-total').innerText = data.total;
 
-            // อัพเดตจำนวนเงินรวมทั้งหมดของตะกร้า
+            // อัพเดตจำนวนเงินรวม
             document.getElementById('grand-total').innerText = data.grandTotal;
         })
         .catch(err => console.error(err)); // ถ้า error ก็แสดงใน console

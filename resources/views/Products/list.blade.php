@@ -9,7 +9,7 @@
     <div class="category-header">
         <div>
             <a href="{{ route('products.create') }}" class="new-class-btn">+ New Product</a>
-            <h2>Category</h2>
+            <h2>Product List</h2>
         </div>
 
         <div>

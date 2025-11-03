@@ -135,6 +135,6 @@ Route::controller(LoginController::class)
     ->group(function () {
         Route::get('/login', 'showLoginForm')->name('login');
         Route::post('/login', 'authenticate')->name('authenticate');
-        Route::post('/logout', 'logout')->name('logout')->middleware('auth'); // logout ต้อง login
+        Route::post('/logout', 'logout')->name('logout')->middleware('auth'); 
         Route::post('/sign-up', 'signup')->name('sign-up');
     });

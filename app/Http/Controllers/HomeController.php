@@ -49,7 +49,6 @@ class HomeController extends SearchableController
 
 
 
-        // เก็บ URL ปัจจุบันไว้ใน session สำหรับกลับมาหน้านี้
         session()->put('bookmarks.products.list', url()->full());
 
         return view('shop.view-shop', [
@@ -64,10 +63,10 @@ class HomeController extends SearchableController
 
     public function viewclass(ServerRequestInterface $request): View
     {
-        // ดึง query string เพื่อ filter
+       
         $criteria = $this->prepareCriteria($request->getQueryParams()); // ['name' => 'Yoga']
 
-        // Query Builder ของ Category
+  
         $query = FitnessCourse::query();;
 
         return view(
@@ -81,9 +80,9 @@ class HomeController extends SearchableController
 
     public function classenroll(ServerRequestInterface $request): View
     {
-        // ดึง query string เพื่อ filter
+       
         $criteria = $this->prepareCriteria($request->getQueryParams()); // ['name' => 'Yoga']
-        // Query Builder ของ Category
+       
         $query = FitnessCourse::query();;
 
         return view(
