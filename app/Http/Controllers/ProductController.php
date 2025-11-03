@@ -38,8 +38,11 @@ class ProductController extends SearchableController
     function applyWhereToFilterByTerm(Builder $query, string $word): void
     {
         $query->where('code', 'LIKE', "%{$word}%")
-              ->orWhere('name', 'LIKE', "%{$word}%");
-              
+            ->orWhere('name', 'LIKE', "%{$word}%");
+
+        if (is_numeric($word)) {
+            $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
+        }
     }
 
     /**
@@ -63,7 +66,7 @@ class ProductController extends SearchableController
             'products' => $products,
         ]);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -192,7 +195,7 @@ class ProductController extends SearchableController
     function delete(string $productCode, Request $request): RedirectResponse
     {
 
-        
+
         $product = $this->find($productCode);
 
         try {

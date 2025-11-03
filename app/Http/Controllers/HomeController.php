@@ -31,8 +31,11 @@ class HomeController extends SearchableController
     function applyWhereToFilterByTerm(Builder $query, string $word): void
     {
         $query->where('code', 'LIKE', "%{$word}%")
-              ->orWhere('name', 'LIKE', "%{$word}%");
-              
+            ->orWhere('name', 'LIKE', "%{$word}%");
+
+        if (is_numeric($word)) {
+            $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
+        }
     }
     public function viewshop(ServerRequestInterface $request): View
     {
@@ -41,7 +44,7 @@ class HomeController extends SearchableController
         $query = $this->search($criteria);
 
         $shop = $query->paginate(8)->withQueryString();
-        
+
         $categories = Category::all();
 
 
@@ -52,9 +55,9 @@ class HomeController extends SearchableController
         return view('shop.view-shop', [
             'criteria' => $criteria,
             'shop' => $shop,
-            
+
             'categories' => $categories,
-            
+
         ]);
     }
 

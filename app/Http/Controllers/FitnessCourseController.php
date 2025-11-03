@@ -30,8 +30,11 @@ class FitnessCourseController extends SearchableController
     function applyWhereToFilterByTerm(Builder $query, string $word): void
     {
         $query->where('code', 'LIKE', "%{$word}%")
-              ->orWhere('name', 'LIKE', "%{$word}%");
-              
+            ->orWhere('name', 'LIKE', "%{$word}%");
+
+        if (is_numeric($word)) {
+            $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
+        }
     }
     public function list(Request $request): View
     {
@@ -40,17 +43,17 @@ class FitnessCourseController extends SearchableController
         // ดึง query string เพื่อ filter
         if ($request->has('term')) {
             session(['fitnessclass_search_term' => $request->input('term')]);
-    }
+        }
 
-    // 2️⃣ เตรียม criteria จาก input หรือ session
-    $term = $request->input('term') ?? session('fitnessclass_search_term', '');
-    $criteria = $this->prepareCriteria(['term' => $term]);
+        // 2️⃣ เตรียม criteria จาก input หรือ session
+        $term = $request->input('term') ?? session('fitnessclass_search_term', '');
+        $criteria = $this->prepareCriteria(['term' => $term]);
 
-    // 3️⃣ ใช้ search() จาก SearchableController
-    $query = $this->search($criteria);
+        // 3️⃣ ใช้ search() จาก SearchableController
+        $query = $this->search($criteria);
 
-    // 4️⃣ Paginate + append query string
-    $class = $query->paginate(self::MAX_ITEMS)->appends(['term' => $term]);
+        // 4️⃣ Paginate + append query string
+        $class = $query->paginate(self::MAX_ITEMS)->appends(['term' => $term]);
 
         // ส่งข้อมูลไป Blade
         return view('fitnessclass.list', [

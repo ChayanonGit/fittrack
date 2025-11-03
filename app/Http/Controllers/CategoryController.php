@@ -21,38 +21,46 @@ class CategoryController extends SearchableController
     {
         return Category::orderBy('code');
     }
+    function applyWhereToFilterByTerm(Builder $query, string $word): void
+    {
+        $query->where('code', 'LIKE', "%{$word}%")
+            ->orWhere('name', 'LIKE', "%{$word}%");
 
+        if (is_numeric($word)) {
+            $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
+        }
+    }
     public function list(Request $request): View
-{
-    // 1️⃣ ถ้ามี query ใหม่ (search)
-    if ($request->has('term')) {
-        session(['category_search_term' => $request->input('term')]);
+    {
+        // 1️⃣ ถ้ามี query ใหม่ (search)
+        if ($request->has('term')) {
+            session(['category_search_term' => $request->input('term')]);
+        }
+
+        // 2️⃣ เตรียม criteria จาก input หรือ session
+        $term = $request->input('term') ?? session('category_search_term', '');
+        $criteria = $this->prepareCriteria(['term' => $term]);
+
+        // 3️⃣ ใช้ search() จาก SearchableController
+        $query = $this->search($criteria);
+
+        // 4️⃣ Paginate + append query string
+        $categories = $query->paginate(self::MAX_ITEMS)->appends(['term' => $term]);
+
+        // 5️⃣ ส่งไป Blade
+        return view('category.list', [
+            'criteria' => $criteria,
+            'category' => $categories,
+        ]);
     }
 
-    // 2️⃣ เตรียม criteria จาก input หรือ session
-    $term = $request->input('term') ?? session('category_search_term', '');
-    $criteria = $this->prepareCriteria(['term' => $term]);
+    public function resetSearch(): RedirectResponse
+    {
+        session()->forget('category_search_term');
+        return redirect()->route('category.list');
+    }
 
-    // 3️⃣ ใช้ search() จาก SearchableController
-    $query = $this->search($criteria);
-
-    // 4️⃣ Paginate + append query string
-    $categories = $query->paginate(self::MAX_ITEMS)->appends(['term' => $term]);
-
-    // 5️⃣ ส่งไป Blade
-    return view('category.list', [
-        'criteria' => $criteria,
-        'category' => $categories,
-    ]);
-}
-
-public function resetSearch(): RedirectResponse
-{
-    session()->forget('category_search_term');
-    return redirect()->route('category.list');
-}
-
-// ฟังก์ชัน reset search
+    // ฟังก์ชัน reset search
 
     public function createform()
     {

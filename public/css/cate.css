@@ -1,0 +1,62 @@
+/* ตัว container หลัก */
+.category-header {
+    display: flex;
+    justify-content: space-between; /* ดันซ้ายขวา */
+    align-items: center; /* จัดแนวกลางในแนวตั้ง */
+    margin-bottom: 1rem; /* ระยะห่างด้านล่าง */
+}
+
+/* ปรับขนาดปุ่ม New Category */
+.new-class-btn {
+    padding: 0.5rem 1rem;
+    background-color: #74461b;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.new-class-btn:hover {
+    background-color: #bda99a;
+}
+
+/* Search form */
+.app-cmp-search-form {
+    display: flex;
+    gap: 0.5rem; /* ระยะห่างระหว่าง input กับปุ่ม */
+    align-items: center;
+}
+
+.app-cmp-search-form input[type="text"] {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.app-cmp-search-form button,
+.app-cmp-search-form a.app-cl-warn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.app-cmp-search-form button {
+    background-color: #74461b;
+    color: white;
+}
+
+.app-cmp-search-form button:hover {
+    background-color: #bda99a;
+}
+
+.app-cmp-search-form a.app-cl-warn {
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+}
+
+.app-cmp-search-form a.app-cl-warn:hover {
+    background-color: #c0392b;
+}
