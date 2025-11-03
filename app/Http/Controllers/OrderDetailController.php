@@ -10,6 +10,8 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
+
 
 class OrderDetailController extends SearchableController
 {
@@ -29,20 +31,29 @@ class OrderDetailController extends SearchableController
 
     public function vieworder(ServerRequestInterface $request): View
     {
+        Gate::authorize('viewAny', OrderDetail::class);
+
         $criteria = $this->prepareCriteria($request->getQueryParams());
         $userId = auth()->id(); // ใช้ user ที่ login
-        $orders = Order::where('user_id', $userId)
-            ->with(['orderDetails.product'])
-            ->paginate(self::MAX_ITEMS);
 
+        $orders = Order::where('user_id', $userId)
+            ->with([
+                'orderDetails.product',
+                'orderDetails.FitnessCourse' // เพิ่ม relation สำหรับคลาส
+            ])
+            ->paginate(self::MAX_ITEMS);
 
         return view('orderlist.view-order', [
             'criteria' => $criteria,
             'orders' => $orders,
         ]);
     }
+
     public function orderDetail(ServerRequestInterface $request, String $OrderCode,): View
     {
+        
+        Gate::authorize('viewAny', OrderDetail::class);
+
         $criteria = $this->prepareCriteria($request->getQueryParams());
         $order = Order::with(['orderDetails.product'])
             ->where('code', $OrderCode)
@@ -60,28 +71,52 @@ class OrderDetailController extends SearchableController
      */
     public function delete(ServerRequestInterface $request, $OrderCode): RedirectResponse
     {
+        // หา order ก่อน
         $order = Order::where('code', $OrderCode)->firstOrFail();
+
+        // ตรวจสอบสิทธิ์ก่อนลบ
+
         try {
+            $orderCode = $order->code; // เก็บไว้ก่อนลบ
             $order->delete();
 
+            // redirect หลังลบเสร็จ
             return redirect(
-                session()->get('bookmarks.products.list', route('products.list'))
-            )
-                ->with('status', "Product {$order->code} was deleted.");
+                session()->get('bookmarks.orders.view', route('order.view-order'))
+            )->with('success', "Order {$orderCode} was deleted.");
         } catch (QueryException $excp) {
-
             return redirect()->back()->withErrors([
                 'alert' => $excp->errorInfo[2],
             ]);
         }
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function approve($orderCode)
     {
-        //
+        $order = Order::where('code', $orderCode)->firstOrFail();
+
+        // เช็คว่า order ยังไม่ถูก approve
+        if ($order->status !== 'paid') {
+            // เปลี่ยน status เป็น paid
+            $order->status = 'paid';
+            $order->save();
+
+            // ลบ stock ของแต่ละ product
+            foreach ($order->orderDetails as $detail) {
+                $product = $detail->product;
+                if ($product) {
+                    // ลด stock เท่ากับ quantity
+                    $product->stock = max(0, $product->stock - $detail->quantity);
+                    $product->save();
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Order approved and stock updated!');
     }
 
     /**

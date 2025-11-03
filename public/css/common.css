@@ -57,11 +57,7 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 .app-cl-code{ display:inline-block;background:#fff;border:1px solid rgba(111,79,58,0.12);
 	padding:8px 14px;border-radius:999px;color:#6f4f3a;box-shadow:0 6px 18px rgba(111,79,58,0.06) }
 
-/* Logout button */
-.app-cmp-main-header > form button{
-	background:#fff;border:1px solid rgba(111,79,58,0.12);color:#6f4f3a;
-	padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;
-}
+
 
 /* Top bar (user/logout) */
 .top-bar {
@@ -259,13 +255,13 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 .btn-add:hover { box-shadow: 0 12px 30px rgba(16,24,40,0.06); }
 
 /* === Login form small tweak === */
-.log-from{ max-width:380px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));box-shadow:var(--shadow-soft) }
+/* .log-from{ max-width:380px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));box-shadow:var(--shadow-soft) }
 .log-from h1{ font-size:1.6rem;color:#0f172a;margin:0 0 1rem;font-weight:700 }
 .log-from p{ margin:0 0 .25rem;color:var(--muted);font-size:.95rem }
 .log-from input[type="email"], .log-from input[type="password"]{
 	width:100%;padding:.6rem .75rem;border:1px solid rgba(15,23,42,0.06);border-radius:8px;background:#fff;margin-bottom:.75rem
 }
-.log-from button[type="submit"]{ padding:.6rem 1rem;border-radius:8px;border:none;background:linear-gradient(90deg,var(--accent-1),var(--accent-3));color:#042027;font-weight:600;cursor:pointer }
+.log-from button[type="submit"]{ padding:.6rem 1rem;border-radius:8px;border:none;background:linear-gradient(90deg,var(--accent-1),var(--accent-3));color:#042027;font-weight:600;cursor:pointer } */
 
 /* === Footer / Main content spacing === */
 #app-cmp-main-content{ padding:8px 0 56px } /* reduced top spacing to bring content up */
@@ -358,8 +354,9 @@ a,a:link,a:visited,a:hover,a:active,a:focus{ text-decoration:none!important }
 /* === Stylish Buttons === */
 .btn-custom {
     display: inline-block;
-    padding: 0.6rem 1.2rem;
+    padding: 0.6rem 1rem;
     font-size: 1rem;
+	width: auto;  
     font-weight: 600;
     text-align: center;
     text-decoration: none;
@@ -924,17 +921,9 @@ select:focus {
 }
 
 form {
-    background: #fff;
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 40px 50px;
+    max-width: 500px;
+	padding: 40px 60px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    transition: 0.3s ease;
-}
-
-form:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 label {
@@ -1324,4 +1313,10 @@ footer {
 
 #radio3:checked~.navigation-auto .auto-btn3 {
     background: black;
+}
+
+
+.top-right .btn-custom {
+    margin: 0;               /* ลบ margin ของปุ่ม */
+    width: auto;             /* ไม่ให้เต็ม form */
 }

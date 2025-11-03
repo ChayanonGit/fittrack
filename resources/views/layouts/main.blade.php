@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <link rel="stylesheet" type="text/css" href="{{ asset('css/common.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/popup.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -33,7 +35,9 @@
                             <a href="{{ route('cart.view-cart') }}" class="app-cl-code">CART</a>
                         @endif
                     @auth
-                        <a href="{{ route('users.view-selves') }}" class="app-cl-code">{{ Auth::user()->name }}</a>
+                        <a href="{{ route('users.view-selves') }}" class="app-cl-code"><i class="fa-solid fa-user"></i>   {{ Auth::user()->name }}</a>
+                        <a href="{{ route('cart.view-cart') }}" class="app-cl-code"><i class="fa-solid fa-cart-shopping"></i></a>
+
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
                             <button type="submit" class="btn-custom">Logout</button>
@@ -41,7 +45,7 @@
                     @endauth
 
                     @guest
-                        <button id="loginBtn" class="btn-custom">Login</button>
+                        <button id="loginBtn" class="btn-custom">Login Or Sign up</button>
                     @endguest
                 </div>
             </div>
@@ -94,17 +98,34 @@
     @yield('scripts')
 
     <div id="loginModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content-wrapper">
             <span class="close">&times;</span>
-            <h2>Login</h2>
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
+
+            <!-- ฝั่ง Login -->
+            <div class="modal-content side left">
+                <h2>Login</h2>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+
+            <!-- ฝั่ง Sign-up -->
+            <div class="modal-content side right">
+                <h2>Sign Up</h2>
+                <form method="POST" action="{{ route('sign-up') }}">
+                    @csrf
+                    <input type="text" name="name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Create Account</button>
+                </form>
+            </div>
         </div>
     </div>
+
 </body>
 
 </html>

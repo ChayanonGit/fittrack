@@ -2,13 +2,7 @@
 
 @section('header')
 <link rel="stylesheet" href="{{ asset('css/fitnessclass.css') }}">
-
-<!-- Search Form -->
-@section('header')
-<link rel="stylesheet" href="{{ asset('css/fitnessclass.css') }}">
-
-<!-- Search Form -->
-<search>
+    <search>
     <form action="{{ route('category.list') }}" method="get" class="app-cmp-search-form">
         <div class="app-cmp-form-detail">
             <label for="app-criteria-term">Search</label>
@@ -28,26 +22,9 @@
         </div>
     </form>
 </search>
+<!-- Search Form -->
 
-<!-- Links Bar -->
-<div class="app-cmp-links-bar">
-    <nav>
-        @php
-            // เก็บ bookmark ของหน้า create-form
-            session()->put('bookmarks.categories.create-form', url()->full());
-        @endphp
 
-        <ul class="app-cmp-links">
-            @can('create', \App\Models\Category::class)
-                <li class="app-cl-filled">
-                    <a href="{{ route('categories.create-form') }}">
-                        <i class="material-symbols-outlined">add_box</i>
-                        New Category
-                    </a>
-                </li>
-            @endcan
-        </ul>
-    </nav>
 
     <!-- Pagination -->
     <div class="app-cmp-pagination">
@@ -99,5 +76,53 @@
     
         
         
+    <link rel="stylesheet" href="{{ asset('css/fitnessclass.css') }}">
+@endsection
+
+@section('content')
+    <h2>Category</h2>
+    <a href="{{ route('category.create') }}" class="new-class-btn">+ New Category</a>
+
+    <div class="cg-data-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Desc.</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($category as $categorys)
+                    <tr>
+                        <td>
+                            @if ($categorys->img)
+                                <img src="{{ asset('storage/img_cat/' . $categorys->img) }}" alt="{{ $categorys->name }}"
+                                    width="100">
+                            @else
+                                <div></div>
+                            @endif
+                        </td>
+                        <td>{{ $categorys->code }}</td>
+                        <td>{{ $categorys->name }}</td>
+                        <td>{{ Str::limit($categorys->description ?? '', 100) }}</td>
+                        <td>
+                            <a href="{{ route('category.view-product', ['category' => $categorys->code]) }}"><i class="fa-solid fa-circle-info"></i></a>
+                            <a href="{{ route('category.update-form', ['category' => $categorys->code]) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="{{ route('category.delete', ['category' => $categorys->code]) }}" class="btn-delete"
+                                data-name="{{ $categorys->name }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+
+
     </section>
 @endsection

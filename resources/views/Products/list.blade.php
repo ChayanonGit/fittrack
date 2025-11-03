@@ -25,69 +25,59 @@
         </form>
     </search>
 
-    <div class="app-cmp-links-bar">
-        <nav>
-            @php
-                session()->put('bookmarks.products.create-form', url()->full());
-            @endphp
-
-            <ul class="app-cmp-links">
-                @can('create', \App\Models\Product::class)
-                    <li class="app-cl-filled">
-                        <a href="{{ route('products.create-form') }}">
-                            <i class="material-symbols-outlined">add_box</i>
-                            New Product
-                        </a>
-                    </li>
-                @endcan
-            </ul>
-        </nav>
-
-        {{ $products->withQueryString()->links() }}
-    </div>
+    
+    
 @endsection
 
 @section('content')
-	<h2>Products</h2>
-	<a href="{{ route('products.create') }}" class="new-class-btn">+ New Product</a>
+    <h2>Products</h2>
+    <a href="{{ route('products.create') }}" class="new-class-btn">+ New Product</a>
 
-	<div class="cg-data-list">
-		<table>
-			<thead>
-				<tr>
-					<th>Image</th>
-					<th>Code</th>
-					<th>Name</th>
-					<th>Price</th>
-					<th>Stock</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach ($products as $product)
-					<tr>
-						<td>
-							@if ($product->img)
-								<img src="{{ asset('storage/img_product/' . $product->img) }}" alt="{{ $product->name }}" width="100">
-							@else
-								<div style=""></div>
-							@endif
-						</td>
-						<td>{{ $product->code }}</td>
-						<td>{{ $product->name }}</td>
-						<td>{{ number_format($product->price ?? 0, 2) }}</td>
-						<td>{{ $product->stock }}</td>
-						<td>
-							<a href="{{ route('products.update-form', ['product' => $product->code]) }}">Edit</a>
-							<a href="{{ route('products.delete', ['product' => $product->code]) }}">Delete</a>
-						</td>
-					</tr>
-				@endforeach
-			</tbody>
-		</table>
-	</div>
+	
 
     
        
+    <div class="cg-data-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($products as $product)
+                    <tr>
+                        <td>
+                            @if ($product->img)
+                                <img src="{{ asset('storage/img_product/' . $product->img) }}" alt="{{ $product->name }}"
+                                    width="100">
+                            @else
+                                <div style=""></div>
+                            @endif
+                        </td>
+                        <td>{{ $product->code }}</td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ number_format($product->price ?? 0, 2) }}</td>
+                        <td>{{ $product->stock }}</td>
+                        <td>
+                            <a href="{{ route('products.update-form', ['product' => $product->code]) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="{{ route('products.delete', ['product' => $product->code]) }}" class="btn-delete"
+                                data-name="{{ $product->name }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+
+
     </section>
 @endsection

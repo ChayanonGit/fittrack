@@ -4,39 +4,50 @@
 @endsection
 
 @section('content')
-    <h2>Order #{{ $order->id }}</h2>
-    <p>User: {{ $order->user_id }}</p>
 
+    <h2>Order #{{ $order->code }}</h2>
     <table>
         <thead>
             <tr>
                 <th>Image</th>
-                <th>Product</th>
+                <th>Name</th>
                 <th>Qty</th>
                 <th>Price</th>
                 <th>Subtotal</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($order->orderDetails as $detail)
+                @php
+                    // เลือกว่าจะเอา product หรือ fitnessCourse
+                    $item = $detail->product ?? $detail->fitnessCourse;
+                @endphp
                 <tr>
-                    <td><img src="{{ asset('storage/img_product/' . $detail->product->img) }}"
-                            alt="{{ $detail->product->name }}" width="100"></td>
-                    <td>{{ $detail->product->name }}</td>
+                    <td>
+                        @if($item)
+                            <img src="{{ asset('storage/img_product/' . $item->img) }}"
+                                 alt="{{ $item->name }}" width="100">
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>{{ $item->name ?? 'N/A' }}</td>
                     <td>{{ $detail->quantity }}</td>
-                    <td>{{ $detail->product->price }}</td>
-                    <td>{{ $detail->quantity * $detail->product->price }}</td>
+                    <td>{{ $item->price ?? 0 }}</td>
+                    <td>{{ $detail->quantity * ($item->price ?? 0) }}</td>
                 </tr>
             @endforeach
-            <td>
-                <a href="{{ route('admin.order.delete', ['orderCode' => $order->code]) }}">Cancel</a>
-                <a href="{{ route('admin.order.delete', ['orderCode' => $order->code]) }}">Edit</a>
-                <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Approve</a>
-            </td>
 
+            @if ($order->status !== 'paid')
+                <tr>
+                    <td colspan="5">
+                        <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Cancel</a>
+
+                    </td>
+                </tr>
+            @endif
         </tbody>
     </table>
 
-    <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * $d->product->price) }}</p>
+    <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * (($d->product ?? $d->fitnessCourse)?->price ?? 0)) }}</p>
 @endsection

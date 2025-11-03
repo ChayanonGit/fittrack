@@ -20,21 +20,8 @@ function errorAlert(message) {
     });
 }
 
-function confirmDelete(formId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById(formId).submit();
-        }
-    });
-}
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const deleteButtons = document.querySelectorAll('.btn-delete');
 
@@ -50,8 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 text: "ข้อมูลนี้จะไม่สามารถกู้คืนได้!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                confirmButtonColor: 'rgba(196, 100, 100, 1)',
+                cancelButtonColor: '#5384b3ff',
                 confirmButtonText: 'ลบเลย',
                 cancelButtonText: 'ยกเลิก'
             }).then((result) => {

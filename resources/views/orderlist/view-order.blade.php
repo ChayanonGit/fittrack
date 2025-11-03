@@ -1,60 +1,71 @@
-@extends('orderlist.main')
+@extends('orders.main')
 
 @section('header')
 @endsection
 
 @section('content')
-    Product List<br>
-    <a href="{{ route('shop.view-shop') }}">Shop</a>
+    Order List<br>
 
     <div class="pd-data-list">
         <table>
             <thead>
-
-                <tr>Image</tr>
-                <tr>Name</tr>
-                <tr>Desc</tr>
-                <tr>Stock</tr>
-
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Desc</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
             </thead>
             <tbody>
-                <tr>
-                    @foreach ($orders as $order)
-                        <div class="order-summary">
-                            <p>Order #{{ $order->code }}</p>
-                            <p>Products:
-                                @php
-                                    $firstDetail = $order->orderDetails->first();
-                                @endphp
+                @forelse ($orders as $order)
+                    <tr>
+                        <td colspan="5">
+                            <div class="order-summary">
+                                <p>Order #{{ $order->code }}</p>
+                                <p>Order Status: {{ $order->status }}</p>
 
-                                @if ($firstDetail)
-                                    <img src="{{ asset('storage/img_product/' . $firstDetail->product->img) }}"
-                                        alt="{{ $firstDetail->product->name }}" width="100">
-                                @endif
-                            </p>
-                            @if ($firstDetail)
-                                <p>Order Name:{{ $firstDetail->product->name }}</p>
-                            @endif
+                                @foreach ($order->orderDetails as $detail)
+                                    @php
+                                        // เลือก item ไม่ว่าจะเป็น product หรือ fitnessCourse
+                                        $item = $detail->product ?? $detail->fitnessCourse;
+                                    @endphp
 
-                            <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * $firstDetail->product->price) }}</p>
-                            <p>Order Status :{{ $order->status }}</p>
+                                    @if ($item)
+                                        <div class="order-item">
+                                            <img src="{{ asset('storage/img_product/' . ($item->img ?? 'default.png')) }}"
+                                                alt="{{ $item->name ?? 'No Name' }}" width="100">
+                                            <p>Name: {{ $item->name ?? 'Unnamed' }}</p>
+                                            <p>Quantity: {{ $detail->quantity }}</p>
+                                            <p>Price: {{ number_format($detail->price, 2) }}</p>
+                                        </div>
+                                    @else
+                                        <p>No item data available</p>
+                                    @endif
+                                @endforeach
 
-                            <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
+                                <p>Total:
+                                    {{ $order->orderDetails->sum(fn($d) => $d->quantity * ($d->product->price ?? ($d->fitnessCourse->price ?? 0))) }}
+                                </p>
 
+                                <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">
+                                   View Details   <i class="fa-solid fa-circle-info"></i>
+                                </a>
+                                @if($order->status=='paid')
 
-
-
-                        </div>
-                    @endforeach
-
-                    {{ $orders->links() }}
-
-
-                    {{ $orders->links() }}
-
-
-                </tr>
+                                <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}"><i class="fa-solid fa-trash"></i>
+                                </a>
+@endif
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5">No Orders Found</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
+        {{ $orders->links() }}
     </div>
 @endsection

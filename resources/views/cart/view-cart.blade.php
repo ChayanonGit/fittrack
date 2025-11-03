@@ -1,6 +1,7 @@
 @extends('cart.main')
 
 @section('header')
+<link rel="stylesheet" href="{{ asset('css/cart.css') }}">
 @endsection
 
 @section('content')
