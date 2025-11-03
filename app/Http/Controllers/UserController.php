@@ -39,7 +39,7 @@ class UserController extends SearchableController
     public function list(ServerRequestInterface $request): View
     {
         
-        // Gate::authorize('view', User::class);
+        Gate::authorize('view', User::class);
         $criteria = $this->prepareCriteria($request->getQueryParams());
         $query = $this->search($criteria);
         // $users = User::orderBy('role')->get();
@@ -53,6 +53,7 @@ class UserController extends SearchableController
     public function showCreateForm(): View
     {
 
+        Gate::authorize('create', User::class);
         $users = User::all();
         return view('users.create-form', [
             'users' => $users,
@@ -61,7 +62,7 @@ class UserController extends SearchableController
 
     public function create(ServerRequestInterface $request,): RedirectResponse
     {
-        // Gate::authorize('create', User::class);
+         Gate::authorize('create', User::class);
 
         $data = $request->getParsedBody();
         $user = new User();

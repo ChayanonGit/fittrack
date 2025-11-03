@@ -3,74 +3,63 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Create a new policy instance.
      */
-    public function viewAny(User $user): bool
+    public function __construct()
     {
-        return false;
+        //
+    }
+    function list(): bool
+    {
+
+        // All authenticated user can list
+
+        return true;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, User $model): bool
+    function view(User $user): bool
     {
+
+        // Same as list action
+
         return $user->isAdministrator();
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    function create(User $user): bool
     {
+
         return $user->isAdministrator();
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, User $model): bool
+    function update(User $user): bool
     {
+
+        // Same as create action.
+
         return $this->create($user);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, User $targetUser): bool
+    function delete(User $user, User $targetUser): bool
     {
+
+        // Same as update action,
+
+        // we consider delete is a special case of update.
+
         return $user->email !== $targetUser->email;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, User $model): bool
+    function updateselves(User $user, User $targetUser): bool
     {
-        return false;
-    }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, User $model): bool
-    {
-        return false;
-    }
+        // Same as update action,
 
-    function applyWhereToFilterByTerm(Builder $query, string $word): void
-{
-    $query->where('code', 'LIKE', "%{$word}%")
-          ->orWhere('name', 'LIKE', "%{$word}%");
+        // we consider delete is a special case of update.
 
-    // ตรวจสอบว่ามีคอลัมน์ price ก่อน
-    if (in_array('price', $query->getModel()->getFillable()) && is_numeric($word)) {
-        $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
+        return $user->getKey() == $targetUser->getKey();
+
     }
-}
 }
