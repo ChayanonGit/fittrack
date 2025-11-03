@@ -7,48 +7,36 @@
     </div>
 
     @foreach ($orders as $order)
-        @php
-            // กรองเฉพาะ orderDetails ที่มี product_id หรือ fitnesscourse_id
-            $validDetails = $order->orderDetails->filter(function ($d) {
-                return ($d->product_id && $d->product) || ($d->fitnesscourse_id && $d->fitnessCourse);
-            });
-        @endphp
-
-        {{-- ถ้าไม่มีรายการที่ตรงเงื่อนไขเลย ข้ามออเดอร์นี้ไป --}}
-        @if ($validDetails->isEmpty())
-            @continue
-        @endif
-
         <div class="order-summary">
             <p><strong>Order #{{ $order->code }}</strong></p>
 
+            {{-- แสดงรายการสินค้าทั้งหมดในออเดอร์ --}}
+            @foreach ($order->orderDetails as $detail)
+                @php
+                    // เลือก item ไม่ว่าจะเป็น product หรือ fitnessCourse
+                    $item = $detail->product ?? $detail->fitnessCourse;
+                @endphp
+
+                @if ($item)
+                    <div class="order-item" style="margin-bottom: 10px;">
+                        <img src="{{ asset('storage/' . ($detail->product ? 'img_product/' : 'img_fitnesscourse/') . $item->img) }}"
+                             alt="{{ $item->name }}" width="100">
+                        <p><b>{{ $detail->product ? 'Product' : 'Course' }}:</b> {{ $item->name }}</p>
+                        <p><b>Qty:</b> {{ $detail->quantity }}</p>
+                        <p><b>Price:</b> {{ $item->price }}</p>
+                    </div>
+                @endif
+            @endforeach
+
+            {{-- รวมยอดทั้งหมด --}}
             @php
-                $firstDetail = $validDetails->first();
+                $total = $order->orderDetails->sum(function ($d) {
+                    $item = $d->product ?? $d->fitnessCourse;
+                    return $item ? $d->quantity * $item->price : 0;
+                });
             @endphp
 
-            @if ($firstDetail->product_id && $firstDetail->product)
-                <img src="{{ asset('storage/img_product/' . $firstDetail->product->img) }}"
-                    alt="{{ $firstDetail->product->name }}" width="100">
-                <p><b>Product:</b> {{ $firstDetail->product->name }}</p>
-            @elseif ($firstDetail->fitnesscourse_id && $firstDetail->fitnessCourse)
-                <img src="{{ asset('storage/img_fitnesscourse/' . $firstDetail->fitnessCourse->img) }}"
-                    alt="{{ $firstDetail->fitnessCourse->name }}" width="100">
-                <p><b>Course:</b> {{ $firstDetail->fitnessCourse->name }}</p>
-            @endif
-
-            <p><b>Total:</b>
-                {{
-                    $validDetails->sum(function ($d) {
-                        if ($d->product_id && $d->product) {
-                            return $d->quantity * $d->product->price;
-                        } elseif ($d->fitnesscourse_id && $d->fitnessCourse) {
-                            return $d->quantity * $d->fitnessCourse->price;
-                        }
-                        return 0;
-                    })
-                }}
-            </p>
-
+            <p><b>Total:</b> {{ $total }}</p>
             <p><b>Status:</b> {{ $order->status }}</p>
 
             <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
