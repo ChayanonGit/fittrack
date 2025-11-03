@@ -9,13 +9,13 @@
     @if (session('cart') && count($cart) > 0)
         <div class="cart-wrapper">
             <div class="cart-container">
-
-                <!-- ✅ หัวข้ออยู่ข้างนอก container -->
                 <div class="cart-header-top">
                     <h2>ตะกร้าสินค้า</h2>
                 </div>
 
+                <!-- Left Side: Products -->
                 <div class="cart-left">
+                    <!-- Header -->
                     <div class="cart-header">
                         <div class="header-img">สินค้า</div>
                         <div class="header-name">ชื่อสินค้า</div>
@@ -26,10 +26,10 @@
                     </div>
 
                     @foreach ($cart as $code => $item)
-                        <div class="cart-item" data-code="{{ $code }}">
+                        <div class="cart-item" data-code="{{ $code }}" data-type="{{ $item['type'] ?? 'product' }}">
                             <div class="item-img">
                                 <img src="{{ asset('storage/img_product/' . ($item['img'] ?? 'default.png')) }}"
-                                    alt="{{ $item['name'] }}">
+                                    alt="{{ $item['name'] }}" width="80">
                             </div>
                             <div class="item-name">{{ $item['name'] }}</div>
                             <div class="item-price">{{ number_format($item['price']) }}</div>
@@ -44,6 +44,7 @@
                     @endforeach
                 </div>
 
+                <!-- Right Side: Total & Checkout -->
                 <div class="cart-right">
                     <h2>สรุปราคารวม</h2>
                     <p>รวมทั้งหมด: <span id="grand-total">{{ number_format($grandTotal) }}</span> ฿</p>
@@ -53,7 +54,6 @@
                         <button type="submit" class="checkout-btn">Checkout</button>
                     </form>
                 </div>
-
             </div>
         </div>
     @else

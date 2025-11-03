@@ -14,7 +14,6 @@ body {
 .cart-header-top {
     width: 100%;
     text-align: left; /* ✅ หรือ center ถ้าอยากให้อยู่ตรงกลาง */
-    margin-bottom: 20px;
     padding-left: 10px;
 }
 .cart-header-top h2 {
@@ -33,19 +32,19 @@ body {
 /* Cart Container */
 .cart-container {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     width: 100%;
-    max-width: 1100px;
+    max-width: 1500px;
+
     flex-direction: row;
 }
 .cart-container {
     display: flex;
     align-items: flex-start;
-    gap: 40px; /* ✅ ให้มีช่องว่างระหว่างซ้ายขวา */
     flex-wrap: wrap;
 }
 /* Cart Title */
