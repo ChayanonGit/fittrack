@@ -33,11 +33,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    function isAdministrator(): bool
-    {
-
-        return $this->role === 'ADMIN';
-    }
+    
     /**
      * Get the attributes that should be cast.
      *
