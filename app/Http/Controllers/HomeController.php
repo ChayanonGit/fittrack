@@ -28,25 +28,33 @@ class HomeController extends SearchableController
     }
 
 
-
-    public function viewshop(Request $request)
+    function applyWhereToFilterByTerm(Builder $query, string $word): void
     {
-        $criteria = $request->query();
+        $query->where('code', 'LIKE', "%{$word}%")
+              ->orWhere('name', 'LIKE', "%{$word}%");
+              
+    }
+    public function viewshop(ServerRequestInterface $request): View
+    {
+        $criteria = $this->prepareCriteria($request->getQueryParams());
 
-        // ดึง products ตาม filter
-        $query = Product::query();
-        if (!empty($criteria['name'])) {
-            $query->where('name', 'like', '%' . $criteria['name'] . '%');
-        }
-        $shop = $query->paginate(self::MAX_ITEMS);
+        $query = $this->search($criteria);
 
-        // ดึง category ทั้งหมด
+        $shop = $query->paginate(8)->withQueryString();
+        
         $categories = Category::all();
+
+
+
+        // เก็บ URL ปัจจุบันไว้ใน session สำหรับกลับมาหน้านี้
+        session()->put('bookmarks.products.list', url()->full());
 
         return view('shop.view-shop', [
             'criteria' => $criteria,
             'shop' => $shop,
-            'categories' => $categories, // ส่งไป Blade ด้วย
+            
+            'categories' => $categories,
+            
         ]);
     }
 

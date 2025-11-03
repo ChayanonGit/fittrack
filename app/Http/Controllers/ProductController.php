@@ -26,16 +26,41 @@ class ProductController extends SearchableController
     /**
      * Display a listing of the resource.
      */
+    function prepareCriteria(array $criteria): array
+    {
+        return parent::prepareCriteria($criteria); // ใช้ของแม่คลาส
+    }
+
+    /**
+     * ใช้สำหรับกำหนดการค้นหาด้วย term
+     */
+    function applyWhereToFilterByTerm(Builder $query, string $word): void
+    {
+        $query->where('code', 'LIKE', "%{$word}%")
+              ->orWhere('name', 'LIKE', "%{$word}%");
+              
+    }
+
+    /**
+     * แสดงหน้ารายการสินค้า
+     */
     public function list(ServerRequestInterface $request): View
     {
         $criteria = $this->prepareCriteria($request->getQueryParams());
+
         $query = $this->search($criteria);
+
+        $products = $query->paginate(8)->withQueryString();
+
+        // เก็บ URL ปัจจุบันไว้ใน session สำหรับกลับมาหน้านี้
+        session()->put('bookmarks.products.list', url()->full());
 
         return view('products.list', [
             'criteria' => $criteria,
-            'products' => $query->paginate(8),
+            'products' => $products,
         ]);
     }
+    
 
     /**
      * Show the form for creating a new resource.

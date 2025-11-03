@@ -73,6 +73,7 @@ Route::middleware([
         ->name('category.')
         ->group(function () {
             Route::get('/list', 'List')->name('list');
+            Route::get('/reset', 'resetSearch')->name('reset');
             route::get('/create', 'createform')->name('create-form');
             route::post('/create', 'create')->name('create');
             Route::prefix('/{category}')->group(function () {

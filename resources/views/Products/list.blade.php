@@ -2,6 +2,49 @@
 
 @section('header')
 	<link rel="stylesheet" href="{{ asset('css/fitnessclass.css') }}">
+
+    <search>
+        <form action="{{ route('products.list') }}" method="get" class="app-cmp-search-form">
+            <div class="app-cmp-form-detail">
+                <label for="app-criteria-term">Search</label>
+                <input type="text" id="app-criteria-term" name="term" value="{{ $criteria['term'] }}" />
+
+                
+            </div>
+
+            <div class="app-cmp-form-actions">
+                <a href="{{ route('products.list') }}">
+                    <button type="button" class="app-cl-warn app-cl-filled">
+                        <i class="material-symbols-outlined">close</i>
+                    </button>
+                </a>
+                <button type="submit" class="app-cl-primary app-cl-filled">
+                    <i class="material-symbols-outlined">search</i>
+                </button>
+            </div>
+        </form>
+    </search>
+
+    <div class="app-cmp-links-bar">
+        <nav>
+            @php
+                session()->put('bookmarks.products.create-form', url()->full());
+            @endphp
+
+            <ul class="app-cmp-links">
+                @can('create', \App\Models\Product::class)
+                    <li class="app-cl-filled">
+                        <a href="{{ route('products.create-form') }}">
+                            <i class="material-symbols-outlined">add_box</i>
+                            New Product
+                        </a>
+                    </li>
+                @endcan
+            </ul>
+        </nav>
+
+        {{ $products->withQueryString()->links() }}
+    </div>
 @endsection
 
 @section('content')
