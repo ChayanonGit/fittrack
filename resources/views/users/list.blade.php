@@ -63,7 +63,6 @@
                             'user' => $user->email,
                         ]) }}"
                     class="app-cl-code">{{ $user->email }}</a></td>
-            <td>{{$user->email}}</td>
             <td>{{$user->name}}</td>
             <td>{{$user->role}}</td>
         </tr>

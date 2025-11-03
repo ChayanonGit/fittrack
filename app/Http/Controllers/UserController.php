@@ -89,7 +89,6 @@ class UserController extends SearchableController
 
     function view(string $email): View
     {
-
         $data = $this->getQuery()->where('email', $email)->firstOrFail();
 
         return view('users.view', [
@@ -186,7 +185,7 @@ class UserController extends SearchableController
                 ->route('users.view', [
                     'user' => $data['email'] ?? $email,
                 ])
-                ->with('status', " Update Successfully.");
+                ->with('success', " Update Successfully.");
         } catch (QueryException $excp) {
             return redirect()->back()->withInput()->withErrors([
                 'alert' => $excp->errorInfo[2],

@@ -32,7 +32,7 @@
                         @if (Auth::check() && Auth::user()->role === 'ADMIN')
                             <a href="" class=""></a>
                         @else
-                            <a href="{{ route('cart.view-cart') }}" class="app-cl-code">CART</a>
+                           
                         @endif
                     @auth
                         <a href="{{ route('users.view-selves') }}" class="app-cl-code"><i class="fa-solid fa-user"></i>   {{ Auth::user()->name }}</a>

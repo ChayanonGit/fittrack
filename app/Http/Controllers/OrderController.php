@@ -97,13 +97,12 @@ class OrderController extends SearchableController
     public function delete(ServerRequestInterface $request, $OrderCode): RedirectResponse
     {
 
-
         $order = Order::where('code', $OrderCode)->firstOrFail();
         try {
             $order->delete();
 
             return redirect(
-                session()->get('bookmarks.products.list', route('order.view-order'))
+                session()->get('bookmarks.products.list', route('admin.order.view-order'))
             )
                 ->with('success', "Product {$order->code} was deleted.");
         } catch (QueryException $excp) {
