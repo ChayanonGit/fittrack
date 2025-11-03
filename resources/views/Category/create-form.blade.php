@@ -19,10 +19,7 @@
             <textarea name="description" id="" required cols="80" rows="10">{{ old('description') }}</textarea>
         </label><br>
 
-        <label for="">
-            <b>Discount</b>
-            <input type="text" name="discount" value="{{ old('discount') }}">
-        </label><br>
+        
 
         <label>
             <b>Category Images</b>
