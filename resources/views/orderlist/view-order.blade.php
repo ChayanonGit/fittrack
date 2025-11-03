@@ -7,30 +7,38 @@
     </div>
 
     @foreach ($orders as $order)
+        @php
+            // กรองเฉพาะ orderDetails ที่มี product_id หรือ fitnesscourse_id
+            $validDetails = $order->orderDetails->filter(function ($d) {
+                return ($d->product_id && $d->product) || ($d->fitnesscourse_id && $d->fitnessCourse);
+            });
+        @endphp
+
+        {{-- ถ้าไม่มีรายการที่ตรงเงื่อนไขเลย ข้ามออเดอร์นี้ไป --}}
+        @if ($validDetails->isEmpty())
+            @continue
+        @endif
+
         <div class="order-summary">
             <p><strong>Order #{{ $order->code }}</strong></p>
 
             @php
-                $firstDetail = $order->orderDetails->first();
+                $firstDetail = $validDetails->first();
             @endphp
 
-            @if ($firstDetail)
-                @if ($firstDetail->product_id && $firstDetail->product)
-                    <img src="{{ asset('storage/img_product/' . $firstDetail->product->img) }}"
-                        alt="{{ $firstDetail->product->name }}" width="100">
-                    <p><b>Product:</b> {{ $firstDetail->product->name }}</p>
-                @elseif ($firstDetail->fitnesscourse_id && $firstDetail->fitnessCourse)
-                    <img src="{{ asset('storage/img_fitnesscourse/' . $firstDetail->fitnessCourse->img) }}"
-                        alt="{{ $firstDetail->fitnessCourse->name }}" width="100">
-                    <p><b>Course:</b> {{ $firstDetail->fitnessCourse->name }}</p>
-                @else
-                    <p><i>ไม่มีข้อมูลสินค้า/คอร์ส</i></p>
-                @endif
+            @if ($firstDetail->product_id && $firstDetail->product)
+                <img src="{{ asset('storage/img_product/' . $firstDetail->product->img) }}"
+                    alt="{{ $firstDetail->product->name }}" width="100">
+                <p><b>Product:</b> {{ $firstDetail->product->name }}</p>
+            @elseif ($firstDetail->fitnesscourse_id && $firstDetail->fitnessCourse)
+                <img src="{{ asset('storage/img_fitnesscourse/' . $firstDetail->fitnessCourse->img) }}"
+                    alt="{{ $firstDetail->fitnessCourse->name }}" width="100">
+                <p><b>Course:</b> {{ $firstDetail->fitnessCourse->name }}</p>
             @endif
 
             <p><b>Total:</b>
                 {{
-                    $order->orderDetails->sum(function ($d) {
+                    $validDetails->sum(function ($d) {
                         if ($d->product_id && $d->product) {
                             return $d->quantity * $d->product->price;
                         } elseif ($d->fitnesscourse_id && $d->fitnessCourse) {
