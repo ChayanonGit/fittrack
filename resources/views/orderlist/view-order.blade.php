@@ -53,7 +53,7 @@
                                 </a>
                                 @if($order->status=='paid')
 
-                                <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}"><i class="fa-solid fa-trash"></i>
+                                <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">
                                 </a>
 @endif
                             </div>
