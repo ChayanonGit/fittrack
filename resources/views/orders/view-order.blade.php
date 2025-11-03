@@ -4,7 +4,9 @@
 @endsection
 
 @section('content')
-    Order List<br>
+
+    <h2>Order List<br>
+    
     {{-- <a href="{{ route('shop.view-shop') }}">Shop</a> --}}
 
     <div class="pd-data-list">

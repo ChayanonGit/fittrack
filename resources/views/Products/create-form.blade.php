@@ -4,9 +4,14 @@
 <form action="{{ route('products.create') }}" method="post" enctype="multipart/form-data">
     @csrf
 
-    <div class="app-cmp-form-detail">
-        <label for="app-inp-code">Image</label>
-            <input type="file" accept="image/*" name="img">
+    <label for="app-inp-code">Image</label>
+<div class="upload-box">
+    <input type="file" id="img-upload" name="img" accept="image/*">
+    <label for="img-upload" class="upload-btn">
+        <i class="fa-solid fa-image"></i> เลือกรูปภาพ
+    </label>
+    <span id="file-name">ยังไม่ได้เลือกรูป</span>
+</div>
         <label for="app-inp-code">Code</label>
         <input type="text" id="app-inp-code" name="code" value="" required />
 
@@ -38,4 +43,12 @@
     </div>
 
 </form>
+@endsection
+@section('scripts')
+<script>
+document.getElementById('img-upload').addEventListener('change', function() {
+    const fileName = this.files.length > 0 ? this.files[0].name : 'ยังไม่ได้เลือกรูป';
+    document.getElementById('file-name').textContent = fileName;
+});
+</script>
 @endsection

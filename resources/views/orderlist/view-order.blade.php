@@ -1,60 +1,36 @@
 @extends('orderlist.main')
 
-@section('header')
-@endsection
-
 @section('content')
-    Product List<br>
-    <a href="{{ route('shop.view-shop') }}">Shop</a>
+    <h1 class="page-title">Product List</h1>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{{ route('shop.view-shop') }}"> Shop</a>
+    </div>
 
-    <div class="pd-data-list">
-        <table>
-            <thead>
+    @foreach ($orders as $order)
+        <div class="order-summary">
+            <p><strong>Order #{{ $order->code }}</strong></p>
 
-                <tr>Image</tr>
-                <tr>Name</tr>
-                <tr>Desc</tr>
-                <tr>Stock</tr>
+            @php
+                $firstDetail = $order->orderDetails->first();
+            @endphp
 
-            </thead>
-            <tbody>
-                <tr>
-                    @foreach ($orders as $order)
-                        <div class="order-summary">
-                            <p>Order #{{ $order->code }}</p>
-                            <p>Products:
-                                @php
-                                    $firstDetail = $order->orderDetails->first();
-                                @endphp
+            @if ($firstDetail)
+                <img src="{{ asset('storage/img_product/' . $firstDetail->product->img) }}"
+                     alt="{{ $firstDetail->product->name }}" width="100">
+                <p><b>Product:</b> {{ $firstDetail->product->name }}</p>
+            @endif
 
-                                @if ($firstDetail)
-                                    <img src="{{ asset('storage/img_product/' . $firstDetail->product->img) }}"
-                                        alt="{{ $firstDetail->product->name }}" width="100">
-                                @endif
-                            </p>
-                            @if ($firstDetail)
-                                <p>Order Name:{{ $firstDetail->product->name }}</p>
-                            @endif
+            <p><b>Total:</b>
+                {{ $order->orderDetails->sum(fn($d) => $d->quantity * $firstDetail->product->price) }}
+            </p>
 
-                            <p>Total: {{ $order->orderDetails->sum(fn($d) => $d->quantity * $firstDetail->product->price) }}</p>
-                            <p>Order Status :{{ $order->status }}</p>
+            <p><b>Status:</b> {{ $order->status }}</p>
 
-                            <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
+            <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">View Details</a>
+        </div>
+    @endforeach
 
-
-
-
-                        </div>
-                    @endforeach
-
-                    {{ $orders->links() }}
-
-
-                    {{ $orders->links() }}
-
-
-                </tr>
-            </tbody>
-        </table>
+    <div class="pagination">
+        {{ $orders->links() }}
     </div>
 @endsection
