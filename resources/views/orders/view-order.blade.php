@@ -4,7 +4,14 @@
 @endsection
 
 @section('content')
+<<<<<<< HEAD
     Order List<br>
+=======
+
+    <h2>Order List<br>
+    
+    {{-- <a href="{{ route('shop.view-shop') }}">Shop</a> --}}
+>>>>>>> origin/uxui12
 
     <div class="pd-data-list">
         <table>
