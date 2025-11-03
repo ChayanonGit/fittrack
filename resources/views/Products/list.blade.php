@@ -1,42 +1,35 @@
 @extends('layouts.main')
 
 @section('header')
-	<link rel="stylesheet" href="{{ asset('css/fitnessclass.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cate.css') }}">
 
-    <search>
-        <form action="{{ route('products.list') }}" method="get" class="app-cmp-search-form">
-            <div class="app-cmp-form-detail">
-                <label for="app-criteria-term">Search</label>
-                <input type="text" id="app-criteria-term" name="term" value="{{ $criteria['term'] }}" />
-
-                
-            </div>
-
-            <div class="app-cmp-form-actions">
-                <a href="{{ route('products.list') }}">
-                    <button type="button" class="app-cl-warn app-cl-filled">
-                        <i class="material-symbols-outlined">close</i>
-                    </button>
-                </a>
-                <button type="submit" class="app-cl-primary app-cl-filled">
-                    <i class="material-symbols-outlined">search</i>
-                </button>
-            </div>
-        </form>
-    </search>
-
-    
-    
 @endsection
 
 @section('content')
-    <h2>Products</h2>
-    <a href="{{ route('products.create') }}" class="new-class-btn">+ New Product</a>
+    <div class="category-header">
+        <div>
+            <a href="{{ route('products.create') }}" class="new-class-btn">+ New Product</a>
+            <h2>Category</h2>
+        </div>
 
-	
+        <div>
+            <search>
+                <form action="{{ route('products.list') }}" method="get" class="app-cmp-search-form">
+                    <input type="text" name="term" value="{{ $criteria['term'] ?? '' }}" placeholder="Search..." />
+                    <button type="submit" class="app-cl-primary app-cl-filled">
+                        <i class="material-symbols-outlined">search</i>
+                    </button>
+                    <a href="{{ route('products.list') }}" class="app-cl-warn app-cl-filled">
+                        <i class="material-symbols-outlined">X</i>
+                    </a>
 
-    
-       
+                </form>
+            </search>
+        </div>
+    </div>
+
+
+
     <div class="cg-data-list">
         <table>
             <thead>
@@ -65,7 +58,8 @@
                         <td>{{ number_format($product->price ?? 0, 2) }}</td>
                         <td>{{ $product->stock }}</td>
                         <td>
-                            <a href="{{ route('products.update-form', ['product' => $product->code]) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="{{ route('products.update-form', ['product' => $product->code]) }}"><i
+                                    class="fa-solid fa-pen-to-square"></i></a>
                             <a href="{{ route('products.delete', ['product' => $product->code]) }}" class="btn-delete"
                                 data-name="{{ $product->name }}">
                                 <i class="fa-solid fa-trash"></i>
