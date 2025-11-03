@@ -83,7 +83,6 @@ class HomeController extends SearchableController
     {
         // ดึง query string เพื่อ filter
         $criteria = $this->prepareCriteria($request->getQueryParams()); // ['name' => 'Yoga']
-
         // Query Builder ของ Category
         $query = FitnessCourse::query();;
 

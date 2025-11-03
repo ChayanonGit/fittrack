@@ -1,5 +1,8 @@
 @extends('orders.main')
+@section('header')
+<link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
 
+@endsection
 @section('content')
     <h1 class="page-title">Product List</h1>
     <div style="text-align: center; margin-bottom: 20px;">

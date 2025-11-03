@@ -8,6 +8,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/paginate.css') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/common.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/popup.css') }}">
@@ -29,14 +30,15 @@
                 <div class="top-left"></div>
 
                 <div class="top-right">
-                        @if (Auth::check() && Auth::user()->role === 'USER')
-                            <a href="{{ route('cart.view-cart') }}" class="app-cl-code"><i class="fa-solid fa-cart-shopping"></i></a>
-                        @else
-                            <a href="" class=""></a>
-                        @endif
+                    @if (Auth::check() && Auth::user()->role === 'USER')
+                        <a href="{{ route('cart.view-cart') }}" class="app-cl-code"><i
+                                class="fa-solid fa-cart-shopping"></i></a>
+                    @else
+                        <a href="" class=""></a>
+                    @endif
                     @auth
-                        <a href="" class="app-cl-code"><i class="fa-solid fa-user"></i>   {{ Auth::user()->name }}</a>
-                        
+                        <a href="" class="app-cl-code"><i class="fa-solid fa-user"></i> {{ Auth::user()->name }}</a>
+
 
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
@@ -73,11 +75,11 @@
                 <div class="app-cmp-home">
                     <a href="{{ route('home') }}" class="home">Fittrack</a>
                 </div>
-                @if (Auth::check() )
-                    @if (Auth::user()->role !== 'ADMIN'|| Auth::user()->role !== 'USER')
-                    <div class="app-cmp-links-left">
-                        <a href="{{ route('order.view-order') }}">My Order</a>
-                    </div>
+                @if (Auth::check())
+                    @if (Auth::user()->role !== 'ADMIN' || Auth::user()->role !== 'USER')
+                        <div class="app-cmp-links-left">
+                            <a href="{{ route('order.view-order') }}">My Order</a>
+                        </div>
                     @endif
                 @endif
             @endif
