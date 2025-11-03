@@ -41,7 +41,7 @@
             @if ($order->status !== 'paid')
                 <tr>
                     <td colspan="5">
-                        <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">Cancel</a>
+                        <a href="{{ route('admin.order.delete', ['orderCode' => $order->code]) }}">Cancel</a>
 
                     </td>
                 </tr>

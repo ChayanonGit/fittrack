@@ -49,13 +49,14 @@
                                 </p>
 
                                 <a href="{{ route('order.view-detail', ['orderCode' => $order->code]) }}">
-                                   View Details   <i class="fa-solid fa-circle-info"></i>
+                                    View Details <i class="fa-solid fa-circle-info"></i>
                                 </a>
-                                @if($order->status=='paid')
+                                @if ($order->status == 'paid')
+                                    <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                @endif
 
-                                <a href="{{ route('order.delete', ['orderCode' => $order->code]) }}"><i class="fa-solid fa-trash"></i>
-                                </a>
-@endif
                             </div>
                         </td>
                     </tr>

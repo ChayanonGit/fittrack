@@ -116,7 +116,7 @@ class OrderDetailController extends SearchableController
             }
         }
 
-        return redirect()->back()->with('success', 'Order approved and stock updated!');
+        return redirect()->back()->with('success', 'Order payment success');
     }
 
     /**

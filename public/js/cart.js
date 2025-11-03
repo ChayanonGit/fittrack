@@ -2,12 +2,13 @@ const token = document.querySelector('meta[name="csrf-token"]').getAttribute('co
 
 document.querySelectorAll('.quantity').forEach(input => {
     input.addEventListener('change', function() {
-        const tr = this.closest('tr');
-        const code = tr.dataset.code;       // เช่น 'FITNESS01' หรือ 'CLASS01'
-        const type = tr.dataset.type;       // เพิ่ม data-type="product" หรือ "class"
+        const itemDiv = this.closest('.cart-item'); // เปลี่ยนจาก tr เป็น .cart-item
+        if (!itemDiv) return; // ป้องกัน error
+        const code = itemDiv.dataset.code;
+        const type = itemDiv.dataset.type;
         const quantity = this.value;
 
-        fetch(`/cart/update/${type}/${code}`, {   // ใส่ type ใน URL
+        fetch(`/cart/update/${type}/${code}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,10 +21,11 @@ document.querySelectorAll('.quantity').forEach(input => {
             return res.json();
         })
         .then(data => {
-            tr.querySelector('.total').innerText = data.total;
+            itemDiv.querySelector('.item-total').innerText = data.total; // เปลี่ยน .total → .item-total
             document.getElementById('grand-total').innerText = data.grandTotal;
         })
         .catch(err => console.error(err));
     });
 });
+
 

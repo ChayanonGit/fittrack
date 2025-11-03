@@ -97,7 +97,6 @@ class OrderController extends SearchableController
     public function delete(ServerRequestInterface $request, $OrderCode): RedirectResponse
     {
 
-
         $order = Order::where('code', $OrderCode)->firstOrFail();
         try {
             $order->delete();
