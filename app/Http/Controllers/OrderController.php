@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Gate;
 
 class OrderController extends SearchableController
 {
-    const MAX_ITEMS = 5;
+    const MAX_ITEMS = 10;
 
     #[\Override]
     function getQuery(?int $userId = null): Builder
