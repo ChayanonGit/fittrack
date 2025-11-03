@@ -29,14 +29,14 @@
                 <div class="top-left"></div>
 
                 <div class="top-right">
-                        @if (Auth::check() && Auth::user()->role === 'ADMIN')
-                            <a href="" class=""></a>
+                        @if (Auth::check() && Auth::user()->role === 'USER')
+                            <a href="{{ route('cart.view-cart') }}" class="app-cl-code"><i class="fa-solid fa-cart-shopping"></i></a>
                         @else
-                            <a href="{{ route('cart.view-cart') }}" class="app-cl-code">CART</a>
+                            <a href="" class=""></a>
                         @endif
                     @auth
-                        <a href="{{ route('users.view-selves') }}" class="app-cl-code"><i class="fa-solid fa-user"></i>   {{ Auth::user()->name }}</a>
-                        <a href="{{ route('cart.view-cart') }}" class="app-cl-code"><i class="fa-solid fa-cart-shopping"></i></a>
+                        <a href="" class="app-cl-code"><i class="fa-solid fa-user"></i>   {{ Auth::user()->name }}</a>
+                        
 
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
@@ -63,6 +63,7 @@
                 <div class="app-cmp-links-left">
                     <a href="{{ route('products.list') }}">Products</a>
                     <a href="{{ route('category.list') }}">Category</a>
+                    <a href="{{ route('users.list') }}">User</a>
                 </div>
             @else
                 <div class="app-cmp-links-right">
@@ -72,9 +73,13 @@
                 <div class="app-cmp-home">
                     <a href="{{ route('home') }}" class="home">Fittrack</a>
                 </div>
-                <div class="app-cmp-links-left">
-                    <a href="{{ route('order.view-order') }}">My Order</a>
-                </div>
+                @if (Auth::check() )
+                    @if (Auth::user()->role !== 'ADMIN'|| Auth::user()->role !== 'USER')
+                    <div class="app-cmp-links-left">
+                        <a href="{{ route('order.view-order') }}">My Order</a>
+                    </div>
+                    @endif
+                @endif
             @endif
         </nav>
     </header>

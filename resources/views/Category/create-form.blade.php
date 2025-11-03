@@ -14,10 +14,7 @@
             <input type="text" name="name" value="{{ old('name') }}" required>
         </label><br>
 
-        <label for="">
-            <b>Description</b>
-            <textarea name="description" id="" required cols="80" rows="10">{{ old('description') }}</textarea>
-        </label><br>
+       
 
         
 

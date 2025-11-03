@@ -10,11 +10,13 @@
     @if (session('cart'))
         <table>
             <tr>
+                <th></th>
                 <th>สินค้า</th>
                 <th>ราคา</th>
                 <th>จำนวน</th>
                 <th>รวม</th>
-                <th>ลบ</th>
+                <th></th>
+                
             </tr>
             @foreach ($cart as $code => $item)
                 <tr data-code="{{ $code }}" data-type="{{ $item['type'] ?? 'product' }}">

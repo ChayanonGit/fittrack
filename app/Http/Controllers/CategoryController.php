@@ -22,14 +22,15 @@ class CategoryController extends SearchableController
         return Category::orderBy('code');
     }
     function applyWhereToFilterByTerm(Builder $query, string $word): void
-    {
-        $query->where('code', 'LIKE', "%{$word}%")
-            ->orWhere('name', 'LIKE', "%{$word}%");
+{
+    $query->where('code', 'LIKE', "%{$word}%")
+          ->orWhere('name', 'LIKE', "%{$word}%");
 
-        if (is_numeric($word)) {
-            $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
-        }
+    // ตรวจสอบว่ามีคอลัมน์ price ก่อน
+    if (in_array('price', $query->getModel()->getFillable()) && is_numeric($word)) {
+        $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
     }
+}
     public function list(Request $request): View
     {
         // 1️⃣ ถ้ามี query ใหม่ (search)

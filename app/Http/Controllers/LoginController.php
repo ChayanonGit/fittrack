@@ -80,7 +80,8 @@ class LoginController extends Controller
         // authenticate by using method attempt()
         if (Auth::attempt($credentials)) {
             session()->regenerate();
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('home'))
+                ->with('success', 'Login successful!');
         }
 
         // if cannot authenticate redirect back to loginForm with error message.

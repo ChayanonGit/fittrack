@@ -14,18 +14,18 @@
 
 
                     <div class="slide first">
-                       <img src="{{ asset('storage/img_slide/s3.png') }}" alt="s3.png">
+                       <img src="{{ asset('storage/img_slide/1.jpg') }}" alt="1.png">
 
 
                     </div>
                     <div class="slide">
-                        <img src="{{ asset('storage/img_slide/s2.jpg') }}"
-                            alt="s2.png" >
+                        <img src="{{ asset('storage/img_slide/2.jpg') }}"
+                            alt="2.png" >
 
                     </div>
                     <div class="slide">
-                        <img src="{{ asset('storage/img_slide/s3.jpg') }}"
-                            alt="s1.png" >
+                        <img src="{{ asset('storage/img_slide/3.jpg') }}"
+                            alt="3.png" >
 
                     </div>
 

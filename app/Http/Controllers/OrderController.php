@@ -103,7 +103,7 @@ class OrderController extends SearchableController
             $order->delete();
 
             return redirect(
-                session()->get('bookmarks.products.list', route('order.view-order'))
+                session()->get('bookmarks.products.list', route('admin.order.view-order'))
             )
                 ->with('success', "Product {$order->code} was deleted.");
         } catch (QueryException $excp) {
