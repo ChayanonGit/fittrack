@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class HomeController extends SearchableController
 {
@@ -27,48 +28,77 @@ class HomeController extends SearchableController
         return view('fittrack.home');
     }
 
-
-
-    public function viewshop(Request $request)
+    #[\Override]
+    function applyWhereToFilterByTerm(Builder $query, string $word): void
     {
-        $criteria = $request->query();
+        parent::applyWhereToFilterByTerm($query, $word);
+        $query->orWhere('code', 'LIKE', "%{$word}%");
+    }
+    #[\Override]
+    function prepareCriteria(array $criteria): array
+    {
+        return [
+            ...parent::prepareCriteria($criteria),
+            'minPrice' => (($criteria['minPrice'] ?? null) === null)
+                ? null
+                : (float) $criteria['minPrice'],
+            'maxPrice' => (($criteria['maxPrice'] ?? null) === null)
+                ? null
+                : (float) $criteria['maxPrice'],
+        ];
+    }
 
-        // ดึง products ตาม filter
-        $query = Product::query();
-        if (!empty($criteria['name'])) {
-            $query->where('name', 'like', '%' . $criteria['name'] . '%');
+    function filterByPrice(
+        Builder|Relation $query,
+        ?float $minPrice,
+        ?float $maxPrice
+    ): Builder|Relation {
+        if ($minPrice !== null) {
+            $query->where('price', '>=', $minPrice);
         }
+        if ($maxPrice !== null) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        return $query;
+    }
+    #[\Override]
+    function filter(Builder|Relation $query, array $criteria): Builder|Relation
+    {
+        $query = parent::filter($query, $criteria);
+        $query = $this->filterByPrice(
+            $query,
+            $criteria['minPrice'],
+            $criteria['maxPrice'],
+        );
+
+        return $query;
+    }
+
+    public function viewshop(ServerRequestInterface $request): View
+    {
+
+        $criteria = $this->prepareCriteria($request->getQueryParams());
+
+
+        $query = $this->search($criteria)->with('category');
+
+
         $shop = $query->paginate(self::MAX_ITEMS);
 
-        // ดึง category ทั้งหมด
+
         $categories = Category::all();
 
         return view('shop.view-shop', [
             'criteria' => $criteria,
             'shop' => $shop,
-            'categories' => $categories, // ส่งไป Blade ด้วย
+            'categories' => $categories,
         ]);
     }
 
 
+
     public function viewclass(ServerRequestInterface $request): View
-    {
-        // ดึง query string เพื่อ filter
-        $criteria = $this->prepareCriteria($request->getQueryParams()); // ['name' => 'Yoga']
-
-        // Query Builder ของ Category
-        $query = FitnessCourse::query();;
-
-        return view(
-            'shop.view-class',
-            [
-                'criteria' => $criteria,
-                'class' => $query->paginate(self::MAX_ITEMS),
-            ]
-        );
-    }
-
-    public function classenroll(ServerRequestInterface $request): View
     {
         // ดึง query string เพื่อ filter
         $criteria = $this->prepareCriteria($request->getQueryParams()); // ['name' => 'Yoga']
