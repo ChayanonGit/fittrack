@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\FitnessCourse;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Policies\CartPolicy;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function viewcart(Request $request)
     {
+        Gate::authorize('viewcart', Cart::class);
+
         $cart = session()->get('cart', []);
         $grandTotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
         return view('cart.view-cart', [
@@ -24,8 +31,47 @@ class CartController extends Controller
         ]);
     }
 
+    public function classenroll(ServerRequestInterface $request, String $ClassCode): RedirectResponse
+    {
+        // ตรวจสอบสิทธิ์
+        Gate::authorize('viewcart', Cart::class);
+
+        // ดึง user ที่ล็อกอิน
+        $user = Auth::user();
+        if (!$user) {
+            abort(403, 'คุณต้องล็อกอินก่อน');
+        }
+
+        // ดึงคลาสที่เลือก
+        $fitnessClass = FitnessCourse::where('code', $ClassCode)->firstOrFail();
+
+        // สร้าง Order ใหม่
+        $order = new Order();
+        $order->user_id = $user->id;
+        $order->status = 'pending';
+        $order->total = $fitnessClass->price;
+        $order->code = 'ORD' . strtoupper(uniqid());
+        $order->save();
+
+        // สร้าง OrderDetail
+        $orderDetail = new OrderDetail();
+        $orderDetail->order_id = $order->id;
+        $orderDetail->fitness_courses_id	 = $fitnessClass->id;
+        $orderDetail->quantity = 1;
+        $orderDetail->price = $fitnessClass->price;
+        $orderDetail->code = 'ODR' . strtoupper(uniqid());
+        $orderDetail->save();
+
+        return redirect()->route('cart.view-cart')
+            ->with('success', "คุณได้ลงทะเบียนคลาส {$fitnessClass->name} เรียบร้อยแล้ว");
+    }
+
+
+
+
     public function add(Request $request, $productCode)
     {
+
         $product = Product::where('code', $productCode)->firstOrFail();
         // ดึง cart จาก session
         $cart = session()->get('cart', []);
@@ -116,20 +162,12 @@ class CartController extends Controller
                 'price'      => $item['price'],
                 'code'       => 'ORD' . strtoupper(Str::random(6)),
             ])->save();
-            $product = \App\Models\Product::find($item['product_id']);
-            if ($product) {
-                $product->stock -= $item['quantity'];
-                // ป้องกัน stock ติดลบ
-                if ($product->stock < 0) {
-                    $product->stock = 0;
-                }
-                $product->save();
-            }
+
             $orderDetail->save();
         }
 
         session()->forget('cart');
 
-        return redirect()->route('cart.view-cart')->with('success', 'ชำระเงินเรียบร้อย!');
+        return redirect()->route('cart.view-cart')->with('success', 'รอการชำระเงิน!');
     }
 }

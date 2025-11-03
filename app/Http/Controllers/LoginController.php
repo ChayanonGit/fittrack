@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,6 +36,32 @@ class LoginController extends Controller
         session()->regenerateToken();
 
         return redirect()->route('home')->with('success', 'You have logged out successfully!');
+    }
+
+    public function signup(ServerRequestInterface $request,): RedirectResponse
+    {
+        $data = $request->getParsedBody();
+        $user = new User();
+        $user->fill($data);
+        $user->email = $data['email'];
+        $user->role = "USER";
+
+
+
+
+        try {
+            $user->save();
+            return redirect(
+                session()->get('bookmarks.users.view', route('home'))
+            )
+
+
+                ->with('success', " {$user->name} Sign Up Success!");
+        } catch (QueryException $excp) {
+            return redirect()->back()->withInput()->withErrors([
+                'alert' => $excp->errorInfo[2],
+            ]);
+        }
     }
     function authenticate(ServerRequestInterface $request): RedirectResponse
     {

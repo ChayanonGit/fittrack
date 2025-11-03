@@ -10,6 +10,8 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
+
 
 class OrderController extends SearchableController
 {
@@ -28,6 +30,8 @@ class OrderController extends SearchableController
     }
     public function vieworder(ServerRequestInterface $request): View
     {
+        Gate::authorize('view', Order::class);
+
         $criteria = $this->prepareCriteria($request->getQueryParams());
         $userId = $request->getQueryParams()['user_id'] ?? null;
         $orders = Order::with(['orderDetails.product', 'user'])
@@ -44,6 +48,7 @@ class OrderController extends SearchableController
 
     public function orderDetail(ServerRequestInterface $request, String $OrderCode,): View
     {
+
         $criteria = $this->prepareCriteria($request->getQueryParams());
         $order = Order::with(['orderDetails.product'])
             ->where('code', $OrderCode)
@@ -91,14 +96,16 @@ class OrderController extends SearchableController
      */
     public function delete(ServerRequestInterface $request, $OrderCode): RedirectResponse
     {
+
+
         $order = Order::where('code', $OrderCode)->firstOrFail();
         try {
             $order->delete();
 
             return redirect(
-                session()->get('bookmarks.products.list', route('products.list'))
+                session()->get('bookmarks.products.list', route('order.view-order'))
             )
-                ->with('status', "Product {$order->code} was deleted.");
+                ->with('success', "Product {$order->code} was deleted.");
         } catch (QueryException $excp) {
 
             return redirect()->back()->withErrors([

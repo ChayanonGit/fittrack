@@ -14,23 +14,30 @@ use App\Http\Controllers\UserController;
 use App\Models\OrderDetail;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::controller(HomeController::class)
+    ->prefix('/shop')
+    ->name('shop.')
+    ->group(function () {
+        Route::get('/', 'viewshop')->name('view-shop');
+        Route::get('/class', 'viewclass')->name('view-class');
+    });
+Route::middleware(['auth', 'cache.headers:no_store,no_cache,must_revalidate,max_age=0'])->group(function () {
 
-Route::middleware([
-    'cache.headers:no_store,no_cache,must_revalidate,max_age=0'
-])->group(function () {
-    // for user
 
-    Route::controller(HomeController::class)
-        ->prefix('/shop')
-        ->name('shop.')
+    Route::controller(CartController::class)
+        ->prefix('cart')
+        ->name('cart.')
         ->group(function () {
-            Route::get('/', 'viewshop')->name('view-shop');
-            Route::get('/class', 'viewclass')->name('view-class');
+            Route::get('/', 'viewcart')->name('view-cart');
+            Route::post('/add/{id}', 'add')->name('add');
+            Route::get('/enroll/{ClassCode}', 'classenroll')->name('enroll');
+            Route::get('/remove/{code}', 'remove')->name('remove');
+            Route::post('/update/product/{code}', 'updateQuantity')->name('cart.updateQuantity');
+            Route::post('/cart',  'checkout')->name('checkout');
         });
-
-    Route::controller(OrderDetailController::class)
-        ->prefix('/order')
-        ->name('order.')
+    Route::controller(OrderController::class)
+        ->prefix('admin/order')
+        ->name('admin.order.')
         ->group(function () {
             Route::get('/', 'vieworder')->name('view-order');
             Route::prefix('/{orderCode}')->group(static function (): void {
@@ -38,36 +45,19 @@ Route::middleware([
                 Route::get('/delete', 'delete')->name('delete');
             });
         });
-
-
-
-
-    Route::controller(CartController::class)
-        ->prefix('cart') // prefix /cart
-        ->name('cart.')
+    Route::controller(OrderDetailController::class)
+        ->prefix('/order')
+        ->name('order.')
         ->group(function () {
-            Route::get('/', 'viewcart')->name('view-cart');              // cart.view-cart
-            Route::post('/add/{id}', 'add')->name('add');               // cart.add
-            Route::get('/remove/{code}', 'remove')->name('remove');     // cart.remove
-            Route::post('/update/{code}',  'updateQuantity')->name('updateQuantity');
-            Route::post('/cart',  'checkout')->name('checkout');
-           
-
-
+            Route::get('/', 'vieworder')->name('view-order');
+            Route::prefix('/{orderCode}')->group(static function (): void {
+                Route::get('/detail', 'orderDetail')->name('view-detail');
+                Route::get('/approve', 'approve')->name('approve');
+                Route::get('/delete', 'delete')->name('delete');
+            });
         });
-
-
-    Route::controller(LoginController::class)
-        ->prefix('auth')
-        ->group(static function (): void {
-            Route::get('/login', 'showLoginForm')->name('login');
-            Route::post('/login', 'authenticate')->name('authenticate');
-            Route::post('/logout', 'logout')->name('logout');
-        });
-
-
-    // for Admin 
-
+});
+Route::middleware(['auth', 'cache.headers:no_store,no_cache,must_revalidate,max_age=0'])->group(function () {
     Route::controller(CategoryController::class)
         ->prefix('/category')
         ->name('category.')
@@ -89,16 +79,7 @@ Route::middleware([
             });
         });
 
-  Route::controller(OrderController::class)
-        ->prefix('admin/order')
-        ->name('admin.order.')
-        ->group(function () {
-            Route::get('/', 'vieworder')->name('view-order');
-            Route::prefix('/{orderCode}')->group(static function (): void {
-                Route::get('/detail', 'orderDetail')->name('view-detail');
-                Route::get('/delete', 'delete')->name('delete');
-            });
-        });    Route::controller(ProductController::class)
+    Route::controller(ProductController::class)
         ->prefix('/products')
         ->name('products.')
         ->group(function () {
@@ -118,8 +99,8 @@ Route::middleware([
         ->name('fitnessclass.')
         ->group(function () {
             Route::get('/list', 'List')->name('list');
-            route::get('/create', 'createform')->name('create-class');
-            route::post('/create', 'create')->name('create');
+            Route::get('/create', 'createform')->name('create-class');
+            Route::post('/create', 'create')->name('create');
             Route::prefix('/{class}')->group(function () {
                 Route::get('', 'view')->name('view');
                 Route::get('/update', 'Updateclass')->name('update-class');
@@ -128,26 +109,31 @@ Route::middleware([
             });
         });
 
-
-    route::controller(UserController::class)
+    Route::controller(UserController::class)
         ->prefix('/user')
         ->name('users.')
-        ->group(static function (): void {
-            route::get('', 'list')->name('list');
-            route::get('/create', 'showCreateForm')->name('create-form');
-            route::post('/create', 'create')->name('create');
+        ->group(function () {
+            Route::get('', 'list')->name('list');
+            Route::get('/create', 'showCreateForm')->name('create-form');
+            Route::post('/create', 'create')->name('create');
 
+            Route::get('/self', 'selfView')->name('view-selves');
+            Route::get('/self/update', 'showUpdateSelf')->name('update-selves-form');
+            Route::post('/self/update', 'UpdateSelf')->name('update-self');
 
-
-            route::get('/self', 'selfView')->name('view-selves');
-            route::get('/self/update', 'showUpdateSelf')->name('update-selves-form');
-            route::post('/self/update', 'UpdateSelf')->name('update-self');
-
-            route::prefix('/{user}')->group(static function (): void {
-                route::get('', 'view')->name('view');
-                route::get('/update', 'showUpdateForm')->name('update-form');
-                route::post('/update', 'update')->name('update');
-                route::post('/delete', 'delete')->name('delete');
+            Route::prefix('/{user}')->group(function () {
+                Route::get('', 'view')->name('view');
+                Route::get('/update', 'showUpdateForm')->name('update-form');
+                Route::post('/update', 'update')->name('update');
+                Route::post('/delete', 'delete')->name('delete');
             });
         });
 });
+Route::controller(LoginController::class)
+    ->prefix('auth')
+    ->group(function () {
+        Route::get('/login', 'showLoginForm')->name('login');
+        Route::post('/login', 'authenticate')->name('authenticate');
+        Route::post('/logout', 'logout')->name('logout')->middleware('auth'); // logout ต้อง login
+        Route::post('/sign-up', 'signup')->name('sign-up');
+    });

@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends SearchableController
 {
@@ -22,6 +23,8 @@ class CategoryController extends SearchableController
 
     public function List(Request $request): View
     {
+        Gate::authorize('viewAny', Category::class);
+
         // ดึง query string เพื่อ filter
         $criteria = $request->query(); // ['name' => 'Yoga']
 
@@ -46,11 +49,16 @@ class CategoryController extends SearchableController
 
     public function createform()
     {
+        Gate::authorize('create', Category::class);
         return view('category.create-form');
     }
 
     public function create(ServerRequestInterface $request): RedirectResponse
     {
+
+        Gate::authorize('create', Category::class);
+
+
         $data = $request->getParsedBody();
         $uploadedFiles = $request->getUploadedFiles();
 
@@ -82,6 +90,7 @@ class CategoryController extends SearchableController
 
     function showUpdateForm(string $cateCode): View
     {
+        Gate::authorize('update', Category::class);
 
         $category = $this->find($cateCode);
 
@@ -99,6 +108,8 @@ class CategoryController extends SearchableController
 
     public function update(ServerRequestInterface $request, string $CateCode): RedirectResponse
     {
+        Gate::authorize('update', Category::class);
+
         $category = $this->find($CateCode);
         $data = $request->getParsedBody();
 
@@ -143,6 +154,8 @@ class CategoryController extends SearchableController
 
     function delete(string $CateCode): RedirectResponse
     {
+
+
         $category = $this->find($CateCode);
 
         $category->delete();

@@ -67,4 +67,21 @@ class HomeController extends SearchableController
             ]
         );
     }
+
+    public function classenroll(ServerRequestInterface $request): View
+    {
+        // ดึง query string เพื่อ filter
+        $criteria = $this->prepareCriteria($request->getQueryParams()); // ['name' => 'Yoga']
+
+        // Query Builder ของ Category
+        $query = FitnessCourse::query();;
+
+        return view(
+            'shop.view-class',
+            [
+                'criteria' => $criteria,
+                'class' => $query->paginate(self::MAX_ITEMS),
+            ]
+        );
+    }
 }

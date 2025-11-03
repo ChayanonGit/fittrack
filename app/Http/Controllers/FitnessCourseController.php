@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 
 class FitnessCourseController extends SearchableController
 {
@@ -28,6 +29,8 @@ class FitnessCourseController extends SearchableController
     }
     public function list(Request $request): View
     {
+        Gate::authorize('viewAny', FitnessCourse::class);
+
         // ดึง query string เพื่อ filter
         $criteria = $request->query(); // ['name' => 'Yoga']
 
@@ -52,11 +55,15 @@ class FitnessCourseController extends SearchableController
 
     public function createform()
     {
+        Gate::authorize('create', FitnessCourse::class);
+
         return view('fitnessclass.create-class');
     }
 
     public function create(ServerRequestInterface $request): RedirectResponse
     {
+        Gate::authorize('create', FitnessCourse::class);
+
         try {
             $data = $request->getParsedBody();
             $uploadedFiles = $request->getUploadedFiles();
@@ -90,6 +97,7 @@ class FitnessCourseController extends SearchableController
 
     function Updateclass(string $classCode): View
     {
+        Gate::authorize('update', FitnessCourse::class);
 
         $class = $this->find($classCode);
 
@@ -103,6 +111,7 @@ class FitnessCourseController extends SearchableController
     {
         $class = $this->find($classCode);
 
+        Gate::authorize('update', FitnessCourse::class);
 
         try {
             $class->fill($request->getParsedBody());
@@ -158,6 +167,7 @@ class FitnessCourseController extends SearchableController
 
     function delete(string $ClassCode): RedirectResponse
     {
+
         $class = $this->find($ClassCode);
 
         $class->delete();

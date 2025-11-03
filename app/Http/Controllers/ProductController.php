@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 
 
 class ProductController extends SearchableController
@@ -28,6 +29,8 @@ class ProductController extends SearchableController
      */
     public function list(ServerRequestInterface $request): View
     {
+        Gate::authorize('viewAny', Product::class);
+
         $criteria = $this->prepareCriteria($request->getQueryParams());
         $query = $this->search($criteria);
 
@@ -42,6 +45,8 @@ class ProductController extends SearchableController
      */
     public function createform(): View
     {
+        Gate::authorize('create', Product::class);
+
         // $category = $categorycontroller->getQuery()->get();
         $category = Category::all();
         return view('products.create-form', [
@@ -54,6 +59,8 @@ class ProductController extends SearchableController
      */
     public function create(ServerRequestInterface $request, CategoryController $categoryController): RedirectResponse
     {
+        Gate::authorize('create', Product::class);
+
         try {
             $data = $request->getParsedBody();
             $category = $categoryController->find($data['category']); // ดึง Category
@@ -96,6 +103,8 @@ class ProductController extends SearchableController
      */
     function showUpdateForm(request $request, string $productCode): View
     {
+        Gate::authorize('update', Product::class);
+
         $fromCategory = $request->query('from_category');
         $product = Product::with('category')->where('code', $productCode)->firstOrFail();
         $category = Category::all();
@@ -119,6 +128,8 @@ class ProductController extends SearchableController
      */
     function update(ServerRequestInterface $request, string $productCode, CategoryController $categoryController): RedirectResponse
     {
+        Gate::authorize('update', Product::class);
+
         $product = $this->find($productCode);
         $data = $request->getParsedBody();
         $category = $categoryController->find($data['category']);
@@ -155,6 +166,8 @@ class ProductController extends SearchableController
      */
     function delete(string $productCode, Request $request): RedirectResponse
     {
+
+        
         $product = $this->find($productCode);
 
         try {
