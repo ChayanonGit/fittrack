@@ -1315,12 +1315,6 @@ footer {
     background: black;
 }
 
-<<<<<<< HEAD
-
-.top-right .btn-custom {
-    margin: 0;               /* ลบ margin ของปุ่ม */
-    width: auto;             /* ไม่ให้เต็ม form */
-=======
 :root {
   --primary-color: #c8a47e;   /* น้ำตาลทอง */
   --secondary-color: #f6efe6; /* ครีมอ่อน */
@@ -1602,6 +1596,5 @@ a:hover {
 
 .upload-btn i {
     font-size: 1rem;
->>>>>>> origin/uxui12
 }
 
