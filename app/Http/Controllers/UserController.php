@@ -16,7 +16,7 @@ use Illuminate\Database\QueryException;
 
 class UserController extends SearchableController
 {
-    const int MAX_ITEMS = 5;
+    const int MAX_ITEMS = 10;
 
     #[\Override]
     function getQuery(): Builder
