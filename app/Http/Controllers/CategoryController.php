@@ -26,7 +26,8 @@ class CategoryController extends SearchableController
         $query->where('code', 'LIKE', "%{$word}%")
             ->orWhere('name', 'LIKE', "%{$word}%");
 
-        if (is_numeric($word)) {
+        // ตรวจสอบว่ามีคอลัมน์ price ก่อน
+        if (in_array('price', $query->getModel()->getFillable()) && is_numeric($word)) {
             $query->orWhereRaw('CAST(price AS CHAR) LIKE ?', ["%{$word}%"]);
         }
     }
